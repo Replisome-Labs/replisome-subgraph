@@ -4,3 +4,78 @@ type ExampleEntity @entity {
   owner: Bytes! # address
   approved: Bytes! # address
 }
+type ArtworkApprovalForAll @entity {
+  id: ID!
+  account: Bytes! # address
+  operator: Bytes! # address
+  approved: Boolean! # bool
+}
+
+type TransferBatch @entity {
+  id: ID!
+  operator: Bytes! # address
+  from: Bytes! # address
+  to: Bytes! # address
+  ids: [BigInt!]! # uint256[]
+  values: [BigInt]! # uint256[]
+}
+
+type TransferSingle @entity {
+  id: ID!
+  operator: Bytes! # address
+  from: Bytes! # address
+  to: Bytes! # address
+  id: BigInt! # uint256
+  value: BigInt! # uint256
+}
+
+type URI @entity {
+  id: ID!
+  value: String! # string
+  id: BigInt! # uint256
+}
+type CopyrightRendererUpdated @entity {
+  id: ID!
+  renderer: Bytes! # address
+}
+
+type FeeTokenUpdated @entity {
+  id: ID!
+  token: Bytes! # address
+}
+
+type FeeUpdated @entity {
+  id: ID!
+  action: Int! # uint8
+  feeFormula: Bytes! # address
+}
+
+type OwnerUpdated @entity {
+  id: ID!
+  user: Bytes! # address
+  newOwner: Bytes! # address
+}
+
+type TreaturyUpdated @entity {
+  id: ID!
+  vault: Bytes! # address
+}
+type Created @entity {
+  id: ID!
+  metadataId: BigInt! # uint256
+}
+type MetadataRegistryOwnerUpdated @entity {
+  id: ID!
+  user: Bytes! # address
+  newOwner: Bytes! # address
+}
+
+type Registered @entity {
+  id: ID!
+  metadata: Bytes! # address
+}
+
+type Unregistered @entity {
+  id: ID!
+  metadata: Bytes! # address
+}

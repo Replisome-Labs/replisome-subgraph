@@ -33,3 +33,106 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/copyright.ts
+  - kind: ethereum
+    name: Artwork
+    network: fuji
+    source:
+      address: "0xD2a20a32Eae122D2E6C6C4CD775279417d76c0FA"
+      abi: Artwork
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - ArtworkApprovalForAll
+        - TransferBatch
+        - TransferSingle
+        - URI
+      abis:
+        - name: Artwork
+          file: ./abis/Artwork.json
+      eventHandlers:
+        - event: ArtworkApprovalForAll(indexed address,indexed address,bool)
+          handler: handleArtworkApprovalForAll
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: URI(string,indexed uint256)
+          handler: handleURI
+      file: ./src/artwork.ts
+  - kind: ethereum
+    name: Configurator
+    network: fuji
+    source:
+      address: "0x87B313b7D1dcf440F256bBd34b580a19cC723cec"
+      abi: Configurator
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - CopyrightRendererUpdated
+        - FeeTokenUpdated
+        - FeeUpdated
+        - OwnerUpdated
+        - TreaturyUpdated
+      abis:
+        - name: Configurator
+          file: ./abis/Configurator.json
+      eventHandlers:
+        - event: CopyrightRendererUpdated(indexed address)
+          handler: handleCopyrightRendererUpdated
+        - event: FeeTokenUpdated(indexed address)
+          handler: handleFeeTokenUpdated
+        - event: FeeUpdated(indexed uint8,address)
+          handler: handleFeeUpdated
+        - event: OwnerUpdated(indexed address,indexed address)
+          handler: handleOwnerUpdated
+        - event: TreaturyUpdated(indexed address)
+          handler: handleTreaturyUpdated
+      file: ./src/configurator.ts
+  - kind: ethereum
+    name: MetadataRegistry
+    network: fuji
+    source:
+      address: "0xb398779ac34b2e4886c8D90b0cb402042DDe12E3"
+      abi: MetadataRegistry
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MetadataRegistryOwnerUpdated
+        - Registered
+        - Unregistered
+      abis:
+        - name: MetadataRegistry
+          file: ./abis/MetadataRegistry.json
+      eventHandlers:
+        - event: MetadataRegistryOwnerUpdated(indexed address,indexed address)
+          handler: handleMetadataRegistryOwnerUpdated
+        - event: Registered(indexed address)
+          handler: handleRegistered
+        - event: Unregistered(indexed address)
+          handler: handleUnregistered
+      file: ./src/metadata-registry.ts
+  - kind: ethereum
+    name: RasterMetadata
+    network: fuji
+    source:
+      address: "0xfA2176a210441BE2529d232A2cCF567990F27A94"
+      abi: RasterMetadata
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Created
+      abis:
+        - name: RasterMetadata
+          file: ./abis/RasterMetadata.json
+      eventHandlers:
+        - event: Created(indexed uint256)
+          handler: handleCreated
+      file: ./src/raster-metadata.ts

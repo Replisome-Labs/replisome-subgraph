@@ -1,0 +1,218 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract ICopyright",
+        "name": "copyright_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "AlreadyCreated",
+    "type": "error"
+  },
+  {
+    "inputs": [{ "internalType": "bytes4", "name": "color", "type": "bytes4" }],
+    "name": "ColorNotFound",
+    "type": "error"
+  },
+  { "inputs": [], "name": "FrameOutOfBoundary", "type": "error" },
+  { "inputs": [], "name": "FrameSizeMistatch", "type": "error" },
+  { "inputs": [], "name": "FrameSizeOverflow", "type": "error" },
+  {
+    "inputs": [{ "internalType": "bytes", "name": "drawing", "type": "bytes" }],
+    "name": "InvalidDrawing",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "enum Rotate", "name": "rotate", "type": "uint8" },
+          { "internalType": "enum Flip", "name": "flip", "type": "uint8" },
+          {
+            "internalType": "uint120",
+            "name": "translateX",
+            "type": "uint120"
+          },
+          { "internalType": "uint120", "name": "translateY", "type": "uint120" }
+        ],
+        "internalType": "struct Layer",
+        "name": "layer",
+        "type": "tuple"
+      }
+    ],
+    "name": "LayerNotExisted",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "enum Rotate", "name": "rotate", "type": "uint8" },
+          { "internalType": "enum Flip", "name": "flip", "type": "uint8" },
+          {
+            "internalType": "uint120",
+            "name": "translateX",
+            "type": "uint120"
+          },
+          { "internalType": "uint120", "name": "translateY", "type": "uint120" }
+        ],
+        "internalType": "struct Layer",
+        "name": "layer",
+        "type": "tuple"
+      }
+    ],
+    "name": "LayerOutOfBoundary",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IMetadata",
+        "name": "metadata",
+        "type": "address"
+      }
+    ],
+    "name": "UnsupportedMetadata",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "metadataId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Created",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "copyright",
+    "outputs": [
+      { "internalType": "contract ICopyright", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes", "name": "data", "type": "bytes" }],
+    "name": "create",
+    "outputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "exists",
+    "outputs": [{ "internalType": "bool", "name": "ok", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "generateRawData",
+    "outputs": [{ "internalType": "bytes", "name": "raw", "type": "bytes" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "generateSVG",
+    "outputs": [{ "internalType": "string", "name": "svg", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "getColors",
+    "outputs": [
+      { "internalType": "bytes4[]", "name": "colors", "type": "bytes4[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "getIngredients",
+    "outputs": [
+      { "internalType": "uint256[]", "name": "tokenIds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "amounts", "type": "uint256[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "height",
+    "outputs": [{ "internalType": "uint256", "name": "h", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes4", "name": "interfaceId", "type": "bytes4" }
+    ],
+    "name": "supportsInterface",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IMetadata",
+        "name": "metadata",
+        "type": "address"
+      }
+    ],
+    "name": "supportsMetadata",
+    "outputs": [{ "internalType": "bool", "name": "ok", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes", "name": "data", "type": "bytes" }],
+    "name": "verify",
+    "outputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "metadataId", "type": "uint256" }
+    ],
+    "name": "width",
+    "outputs": [{ "internalType": "uint256", "name": "w", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
