@@ -1,0 +1,35 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Copyright
+    network: fuji
+    source:
+      address: "0x56495A26370859a7A209C722E564b104701a59E2"
+      abi: Copyright
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - PropertyCreated
+        - PropertyRulesetUpdated
+        - Transfer
+      abis:
+        - name: Copyright
+          file: ./abis/Copyright.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: PropertyCreated(indexed uint256,(address,address,address,uint256))
+          handler: handlePropertyCreated
+        - event: PropertyRulesetUpdated(indexed uint256,indexed address)
+          handler: handlePropertyRulesetUpdated
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/copyright.ts
