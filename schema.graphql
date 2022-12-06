@@ -1,81 +1,169 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  approved: Bytes! # address
-}
-type ArtworkApprovalForAll @entity {
-  id: ID!
-  account: Bytes! # address
-  operator: Bytes! # address
-  approved: Boolean! # bool
-}
-
-type TransferBatch @entity {
-  id: ID!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  ids: [BigInt!]! # uint256[]
-  values: [BigInt]! # uint256[]
+type Account @entity {
+  id: Bytes!
+  artworkBalances: [ArtworkBalance!]! @derivedFrom(field: "account")
+  artworkOperatorOwner: [ArtworkOperator!]! @derivedFrom(field: "owner")
+  artworkOperatorOperator: [ArtworkOperator!]! @derivedFrom(field: "operator")
+  artworkTransferFromEvent: [ArtworkTransfer!]! @derivedFrom(field: "from")
+  artworkTransferToEvent: [ArtworkTransfer!]! @derivedFrom(field: "to")
+  artworkTransferOperatorEvent: [ArtworkTransfer!]!
+    @derivedFrom(field: "operator")
+  copyrightTokens: [CopyrightToken!]! @derivedFrom(field: "owner")
+  copyrightOperatorOwner: [CopyrightOperator!]! @derivedFrom(field: "owner")
+  copyrightOperatorOperator: [CopyrightOperator!]!
+    @derivedFrom(field: "operator")
+  copyrightTransferFromEvent: [CopyrightTransfer!]! @derivedFrom(field: "from")
+  copyrightTransferToEvent: [CopyrightTransfer!]! @derivedFrom(field: "to")
+  events: [Event!]! @derivedFrom(field: "emitter")
 }
 
-type TransferSingle @entity {
-  id: ID!
-  operator: Bytes! # address
-  from: Bytes! # address
-  to: Bytes! # address
-  id: BigInt! # uint256
-  value: BigInt! # uint256
+type ArtworkContract @entity(immutable: true) {
+  id: Bytes!
+  tokens: [ArtworkToken!]! @derivedFrom(field: "contract")
+  balances: [ArtworkBalance!]! @derivedFrom(field: "contract")
+  operators: [ArtworkOperator!]! @derivedFrom(field: "contract")
+  transfers: [ArtworkTransfer!]! @derivedFrom(field: "contract")
 }
 
-type URI @entity {
+type ArtworkToken @entity {
   id: ID!
-  value: String! # string
-  id: BigInt! # uint256
-}
-type CopyrightRendererUpdated @entity {
-  id: ID!
-  renderer: Bytes! # address
-}
-
-type FeeTokenUpdated @entity {
-  id: ID!
-  token: Bytes! # address
+  contract: ArtworkContract!
+  identifier: BigInt!
+  uri: String!
+  copyright: CopyrightToken!
+  totalSupply: BigInt!
+  ownedSupply: BigInt!
+  usedSupply: BigInt!
+  balances: [ArtworkBalance!]! @derivedFrom(field: "token")
+  transfers: [ArtworkTransfer!]! @derivedFrom(field: "token")
 }
 
-type FeeUpdated @entity {
+type ArtworkBalance @entity {
   id: ID!
-  action: Int! # uint8
-  feeFormula: Bytes! # address
+  contract: ArtworkContract!
+  token: ArtworkToken!
+  account: Account!
+  value: BigInt!
+  ownedValue: BigInt!
+  usedValue: BigInt!
+  transferFromEvent: [ArtworkTransfer!]! @derivedFrom(field: "fromBalance")
+  transferToEvent: [ArtworkTransfer!]! @derivedTo(field: "toBalance")
 }
 
-type OwnerUpdated @entity {
+type ArtworkOperator @entity {
   id: ID!
-  user: Bytes! # address
-  newOwner: Bytes! # address
+  contract: ArtworkContract!
+  owner: Account!
+  operator: Account!
+  approved: Boolean!
 }
 
-type TreaturyUpdated @entity {
+type ArtworkTransfer implements Event @entity(immutable: true) {
   id: ID!
-  vault: Bytes! # address
-}
-type Created @entity {
-  id: ID!
-  metadataId: BigInt! # uint256
-}
-type MetadataRegistryOwnerUpdated @entity {
-  id: ID!
-  user: Bytes! # address
-  newOwner: Bytes! # address
-}
-
-type Registered @entity {
-  id: ID!
-  metadata: Bytes! # address
+  contract: ArtworkContract!
+  token: ArtworkToken!
+  emitter: Account!
+  transaction: Transaction!
+  timestamp: BigInt!
+  operator: Account!
+  from: Account
+  fromBalance: ArtworkBalance
+  to: Account
+  toBalance: ArtworkBalance
+  value: BigInt!
 }
 
-type Unregistered @entity {
+type CopyrightContract @entity(immutable: true) {
+  id: Bytes!
+  name: String
+  symbol: String
+  tokens: [CopyrightToken!]! @derivedFrom(field: "contract")
+  operators: [CopyrightOperator!]! @derivedFrom(field: "contract")
+  transfers: [CopyrightTransfer!]! @derivedFrom(field: "contract")
+}
+
+type CopyrightToken @entity {
   id: ID!
-  metadata: Bytes! # address
+  contract: CopyrightContract!
+  identifier: BigInt!
+  uri: String
+  artwork: ArtworkToken!
+  metadata: MetadataInfo!
+  ruleset: Ruleset!
+  creator: Account!
+  owner: Account!
+  approval: Account!
+  provananceFrom: [CopyrightProvanance!]! @derivedFrom(field: "toToken")
+  provananceTo: [CopyrightProvanance!]! @derivedFrom(field: "fromToken")
+  transfers: [CopyrightTransfer!]! @derivedFrom(field: "token")
+}
+
+type CopyrightProvanance @entity(immutable: true) {
+  id: ID!
+  fromToken: CopyrightToken!
+  toToken: CopyrightToken!
+  amount: BigInt!
+}
+
+type CopyrightOperator @entity {
+  id: ID!
+  contract: CopyrightContract!
+  owner: Account!
+  operator: Account!
+  approved: Boolean!
+}
+
+type CopyrightTransfer implements Event @entity(immutable: true) {
+  id: ID!
+  emitter: Account!
+  transaction: Transaction!
+  timestamp: BigInt!
+  contract: CopyrightContract!
+  token: CopyrightToken!
+  from: Account!
+  to: Account!
+}
+
+type MetadataContract @entity {
+  id: Bytes!
+  isRegistered: Boolean!
+  totalSupply: BigInt!
+}
+
+type MetadataInfo @entity(immutable: true) {
+  id: ID!
+  contract: MetadataContract!
+  identifier: BigInt!
+  copyright: CopyrightToken
+  width: BigInt!
+  height: BigInt!
+  colors: [String!]
+  svg: String!
+  raw: Bytes!
+  ingredients: [MetadataIngredient!]! @derivedFrom(field: "metadata")
+}
+
+type MetadataIngredient @entity(immutable: true) {
+  id: ID!
+  metadata: MetadataInfo!
+  token: CopyrightToken!
+  amount: BigInt!
+}
+
+type Ruleset @entity {
+  id: Bytes!
+  isUpgradable: Boolean!
+}
+
+interface Event {
+  id: ID!
+  transaction: Transaction!
+  emitter: Account!
+  timestamp: BigInt!
+}
+
+type Transaction @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  events: [Event!]! @derivedFrom(field: "transaction")
 }

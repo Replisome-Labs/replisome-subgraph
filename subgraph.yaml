@@ -3,136 +3,107 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Copyright
-    network: fuji
-    source:
-      address: "0x56495A26370859a7A209C722E564b104701a59E2"
-      abi: Copyright
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - Approval
-        - ApprovalForAll
-        - PropertyCreated
-        - PropertyRulesetUpdated
-        - Transfer
-      abis:
-        - name: Copyright
-          file: ./abis/Copyright.json
-      eventHandlers:
-        - event: Approval(indexed address,indexed address,indexed uint256)
-          handler: handleApproval
-        - event: ApprovalForAll(indexed address,indexed address,bool)
-          handler: handleApprovalForAll
-        - event: PropertyCreated(indexed uint256,(address,address,address,uint256))
-          handler: handlePropertyCreated
-        - event: PropertyRulesetUpdated(indexed uint256,indexed address)
-          handler: handlePropertyRulesetUpdated
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      file: ./src/copyright.ts
-  - kind: ethereum
     name: Artwork
     network: fuji
     source:
       address: "0xD2a20a32Eae122D2E6C6C4CD775279417d76c0FA"
-      abi: Artwork
+      abi: IArtwork
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - ArtworkApprovalForAll
-        - TransferBatch
-        - TransferSingle
-        - URI
+        - Account
+        - ArtworkContract
+        - ArtworkToken
+        - ArtworkBalance
+        - ArtworkOperator
+        - ArtworkTransfer
       abis:
-        - name: Artwork
-          file: ./abis/Artwork.json
+        - name: IArtwork
+          file: ./abis/IArtwork.json
       eventHandlers:
-        - event: ArtworkApprovalForAll(indexed address,indexed address,bool)
-          handler: handleArtworkApprovalForAll
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
         - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
           handler: handleTransferBatch
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
         - event: URI(string,indexed uint256)
           handler: handleURI
-      file: ./src/artwork.ts
+      callHandlers:
+        - function: copy(address,uint256,uint256)
+          handler: handleCopy
+        - function: burn(address,uint256,uint256)
+          handler: handleBurn
+      file: ./src/mappings/artwork.ts
   - kind: ethereum
-    name: Configurator
+    name: Copyright
     network: fuji
     source:
-      address: "0x87B313b7D1dcf440F256bBd34b580a19cC723cec"
-      abi: Configurator
+      address: "0x56495A26370859a7A209C722E564b104701a59E2"
+      abi: ICopyright
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - CopyrightRendererUpdated
-        - FeeTokenUpdated
-        - FeeUpdated
-        - OwnerUpdated
-        - TreaturyUpdated
+        - CopyrightContract
+        - CopyrightToken
+        - CopyrightProvanance
+        - CopyrightOperator
+        - CopyrightTransfer
       abis:
-        - name: Configurator
-          file: ./abis/Configurator.json
+        - name: ICopyright
+          file: ./abis/ICopyright.json
       eventHandlers:
-        - event: CopyrightRendererUpdated(indexed address)
-          handler: handleCopyrightRendererUpdated
-        - event: FeeTokenUpdated(indexed address)
-          handler: handleFeeTokenUpdated
-        - event: FeeUpdated(indexed uint8,address)
-          handler: handleFeeUpdated
-        - event: OwnerUpdated(indexed address,indexed address)
-          handler: handleOwnerUpdated
-        - event: TreaturyUpdated(indexed address)
-          handler: handleTreaturyUpdated
-      file: ./src/configurator.ts
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: PropertyRulesetUpdated(indexed uint256,indexed address)
+          handler: handlePropertyRulesetUpdated
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mappings/copyright.ts
   - kind: ethereum
     name: MetadataRegistry
     network: fuji
     source:
       address: "0xb398779ac34b2e4886c8D90b0cb402042DDe12E3"
-      abi: MetadataRegistry
+      abi: IMetadataRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - MetadataRegistryOwnerUpdated
-        - Registered
-        - Unregistered
+        - MetadataContract
       abis:
-        - name: MetadataRegistry
-          file: ./abis/MetadataRegistry.json
+        - name: IMetadataRegistry
+          file: ./abis/IMetadataRegistry.json
       eventHandlers:
-        - event: MetadataRegistryOwnerUpdated(indexed address,indexed address)
-          handler: handleMetadataRegistryOwnerUpdated
         - event: Registered(indexed address)
           handler: handleRegistered
         - event: Unregistered(indexed address)
           handler: handleUnregistered
-      file: ./src/metadata-registry.ts
+      file: ./src/mappings/metadata-registry.ts
+templates:
   - kind: ethereum
-    name: RasterMetadata
+    name: Metadata
     network: fuji
     source:
-      address: "0xfA2176a210441BE2529d232A2cCF567990F27A94"
-      abi: RasterMetadata
+      abi: IMetadata
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - Created
+        - MetadataContract
+        - MetadataInfo
       abis:
-        - name: RasterMetadata
-          file: ./abis/RasterMetadata.json
+        - name: IMetadata
+          file: ./abis/IMetadata.json
       eventHandlers:
         - event: Created(indexed uint256)
           handler: handleCreated
-      file: ./src/raster-metadata.ts
+      file: ./src/mappings/metadata.ts
