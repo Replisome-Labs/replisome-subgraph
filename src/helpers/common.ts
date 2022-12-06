@@ -1,5 +1,15 @@
-import { Bytes, ethereum } from '@graphprotocol/graph-ts'
+import { Bytes, ethereum, TypedMap } from '@graphprotocol/graph-ts'
 import { Transaction } from '../../generated/schema'
+
+export const actionTable = new TypedMap<number, string>()
+actionTable.set(0, "ArtworkTransfer")
+actionTable.set(1, "ArtworkCopy")
+actionTable.set(2, "ArtworkBurn")
+actionTable.set(3, "ArtworkSale")
+actionTable.set(4, "CopyrightTransfer")
+actionTable.set(5, "CopyrightClaim")
+actionTable.set(6, "CopyrightWaive")
+actionTable.set(7, "CopyrightSale")
 
 export function supportsInterface(contract: ethereum.SmartContract, interfaceId: string, expected: boolean = true): boolean {
 	let result = ethereum.call(new ethereum.SmartContractCall(

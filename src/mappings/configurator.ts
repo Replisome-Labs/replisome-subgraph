@@ -1,58 +1,33 @@
 import {
-  CopyrightRendererUpdated as CopyrightRendererUpdatedEvent,
-  FeeTokenUpdated as FeeTokenUpdatedEvent,
-  FeeUpdated as FeeUpdatedEvent,
-  OwnerUpdated as OwnerUpdatedEvent,
-  TreaturyUpdated as TreaturyUpdatedEvent
-} from "../generated/Configurator/Configurator"
-import {
-  CopyrightRendererUpdated,
   FeeTokenUpdated,
   FeeUpdated,
   OwnerUpdated,
   TreaturyUpdated
-} from "../generated/schema"
+} from "../../generated/Configurator/Configurator"
+import { fetchConfigurator, fetchFeeFormula } from "../helpers/configurator"
 
-export function handleCopyrightRendererUpdated(
-  event: CopyrightRendererUpdatedEvent
-): void {
-  let entity = new CopyrightRendererUpdated(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.renderer = event.params.renderer
-  entity.save()
+
+export function handleFeeTokenUpdated(event: FeeTokenUpdated): void {
+  let configurator = fetchConfigurator(event.address)
+  configurator.feeToken = event.params.token
+  configurator.save()
 }
 
-export function handleFeeTokenUpdated(event: FeeTokenUpdatedEvent): void {
-  let entity = new FeeTokenUpdated(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.token = event.params.token
-  entity.save()
+export function handleFeeUpdated(event: FeeUpdated): void {
+  let configurator = fetchConfigurator(event.address)
+  let feeFormula = fetchFeeFormula(configurator, event.params.action)
+  feeFormula.value = event.params.feeFormula
+  feeFormula.save()
 }
 
-export function handleFeeUpdated(event: FeeUpdatedEvent): void {
-  let entity = new FeeUpdated(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.action = event.params.action
-  entity.feeFormula = event.params.feeFormula
-  entity.save()
+export function handleOwnerUpdated(event: OwnerUpdated): void {
+  let configurator = fetchConfigurator(event.address)
+  configurator.owner = event.params.newOwner
+  configurator.save()
 }
 
-export function handleOwnerUpdated(event: OwnerUpdatedEvent): void {
-  let entity = new OwnerUpdated(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.user = event.params.user
-  entity.newOwner = event.params.newOwner
-  entity.save()
-}
-
-export function handleTreaturyUpdated(event: TreaturyUpdatedEvent): void {
-  let entity = new TreaturyUpdated(
-    event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  )
-  entity.vault = event.params.vault
-  entity.save()
+export function handleTreaturyUpdated(event: TreaturyUpdated): void {
+  let configurator = fetchConfigurator(event.address)
+  configurator.treatury = event.params.vault
+  configurator.save()
 }

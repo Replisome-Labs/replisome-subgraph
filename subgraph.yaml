@@ -29,8 +29,6 @@ dataSources:
           handler: handleTransferBatch
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
-        - event: URI(string,indexed uint256)
-          handler: handleURI
       callHandlers:
         - function: copy(address,uint256,uint256)
           handler: handleCopy
@@ -71,7 +69,7 @@ dataSources:
     network: fuji
     source:
       address: "0xb398779ac34b2e4886c8D90b0cb402042DDe12E3"
-      abi: IMetadataRegistry
+      abi: MetadataRegistry
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -79,14 +77,40 @@ dataSources:
       entities:
         - MetadataContract
       abis:
-        - name: IMetadataRegistry
-          file: ./abis/IMetadataRegistry.json
+        - name: MetadataRegistry
+          file: ./abis/MetadataRegistry.json
       eventHandlers:
         - event: Registered(indexed address)
           handler: handleRegistered
         - event: Unregistered(indexed address)
           handler: handleUnregistered
       file: ./src/mappings/metadata-registry.ts
+  - kind: ethereum
+    name: Configurator
+    network: fuji
+    source:
+      address: "0xb398779ac34b2e4886c8D90b0cb402042DDe12E3"
+      abi: Configurator
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Configurator
+        - FeeFormula
+      abis:
+        - name: Configurator
+          file: ./abis/Configurator.json
+      eventHandlers:
+        - event: OwnerUpdated(indexed address,indexed address)
+          handler: handleOwnerUpdated
+        - event: TreaturyUpdated(indexed address)
+          handler: handleTreaturyUpdated
+        - event: FeeTokenUpdated(indexed address)
+          handler: handleFeeTokenUpdated
+        - event: FeeUpdated(indexed uint8,indexed address)
+          handler: handleFeeUpdated
+      file: ./src/mappings/configurator.ts
 templates:
   - kind: ethereum
     name: Metadata

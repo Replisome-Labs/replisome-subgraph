@@ -104,13 +104,6 @@ export function handleTransferSingle(event: TransferSingle): void {
 	)
 }
 
-export function handleURI(event: URI): void {
-  // let contract = fetchArtworkContract(event.address)
-	// let token    = fetchArtworkToken(contract, event.params.id)
-	// token.uri    = replaceURI(event.params.value, event.params.id)
-	// token.save()
-}
-
 function registerTransfer(
 	event: ethereum.Event,
 	suffix: string,

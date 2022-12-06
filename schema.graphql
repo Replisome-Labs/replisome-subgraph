@@ -154,6 +154,32 @@ type Ruleset @entity {
   isUpgradable: Boolean!
 }
 
+type Configurator @entity {
+  id: Bytes!
+  owner: Account!
+  treatury: Account!
+  feeToken: Bytes!
+  feeFormulas: [FeeFormula!]! @derivedFrom(field: "configurator")
+}
+
+type FeeFormula @entity {
+  id: ID!
+  configurator: Configurator!
+  action: Action!
+  value: Bytes!
+}
+
+enum Action {
+  ArtworkTransfer
+  ArtworkCopy
+  ArtworkBurn
+  ArtworkSale
+  CopyrightTransfer
+  CopyrightClaim
+  CopyrightWaive
+  CopyrightSale
+}
+
 interface Event {
   id: ID!
   transaction: Transaction!
