@@ -1,58 +1,54 @@
 import {
   assert,
-  describe,
   test,
   clearStore,
-  beforeAll,
-  afterAll
-} from "matchstick-as/assembly/index"
-import { Address } from "@graphprotocol/graph-ts"
-import { MetadataRegistryOwnerUpdated } from "../generated/schema"
-import { MetadataRegistryOwnerUpdated as MetadataRegistryOwnerUpdatedEvent } from "../generated/MetadataRegistry/MetadataRegistry"
-import { handleMetadataRegistryOwnerUpdated } from "../src/metadata-registry"
-import { createMetadataRegistryOwnerUpdatedEvent } from "./metadata-registry-utils"
+  afterAll,
+} from "matchstick-as/assembly/index";
+import { Address } from "@graphprotocol/graph-ts";
+import {
+  handleRegistered,
+  handleUnregistered,
+} from "../src/mappings/metadata-registry";
+import {
+  createRegisteredEvent,
+  createUnregisteredEvent,
+} from "./metadata-registry-utils";
 
-// Tests structure (matchstick-as >=0.5.0)
-// https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
+let contractAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000001"
+);
+let metadataAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000002"
+);
 
-describe("Describe entity assertions", () => {
-  beforeAll(() => {
-    let user = Address.fromString("0x0000000000000000000000000000000000000001")
-    let newOwner = Address.fromString(
-      "0x0000000000000000000000000000000000000001"
-    )
-    let newMetadataRegistryOwnerUpdatedEvent = createMetadataRegistryOwnerUpdatedEvent(
-      user,
-      newOwner
-    )
-    handleMetadataRegistryOwnerUpdated(newMetadataRegistryOwnerUpdatedEvent)
-  })
+afterAll(() => {
+  clearStore();
+});
 
-  afterAll(() => {
-    clearStore()
-  })
+test("event:Registered", () => {
+  let event = createRegisteredEvent(metadataAddress);
+  event.address = contractAddress;
 
-  // For more test scenarios, see:
-  // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
+  handleRegistered(event);
 
-  test("MetadataRegistryOwnerUpdated created and stored", () => {
-    assert.entityCount("MetadataRegistryOwnerUpdated", 1)
+  assert.fieldEquals(
+    "MetadataContract",
+    metadataAddress.toHex(),
+    "isRegistered",
+    "true"
+  );
+});
 
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
-    assert.fieldEquals(
-      "MetadataRegistryOwnerUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "user",
-      "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "MetadataRegistryOwnerUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "newOwner",
-      "0x0000000000000000000000000000000000000001"
-    )
+test("event:Unregistered", () => {
+  let event = createUnregisteredEvent(metadataAddress);
+  event.address = contractAddress;
 
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
-  })
-})
+  handleUnregistered(event);
+
+  assert.fieldEquals(
+    "MetadataContract",
+    metadataAddress.toHex(),
+    "isRegistered",
+    "false"
+  );
+});

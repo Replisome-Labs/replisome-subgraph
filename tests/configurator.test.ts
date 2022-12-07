@@ -1,50 +1,99 @@
 import {
   assert,
-  describe,
   test,
   clearStore,
-  beforeAll,
-  afterAll
-} from "matchstick-as/assembly/index"
-import { Address } from "@graphprotocol/graph-ts"
-import { CopyrightRendererUpdated } from "../generated/schema"
-import { CopyrightRendererUpdated as CopyrightRendererUpdatedEvent } from "../generated/Configurator/Configurator"
-import { handleCopyrightRendererUpdated } from "../src/configurator"
-import { createCopyrightRendererUpdatedEvent } from "./configurator-utils"
+  afterAll,
+} from "matchstick-as/assembly/index";
+import { Address } from "@graphprotocol/graph-ts";
+import {
+  handleFeeTokenUpdated,
+  handleFeeUpdated,
+  handleOwnerUpdated,
+  handleTreaturyUpdated,
+} from "../src/mappings/configurator";
+import {
+  createFeeTokenUpdatedEvent,
+  createFeeUpdatedEvent,
+  createOwnerUpdatedEvent,
+  createTreaturyUpdatedEvent,
+} from "./configurator-utils";
+import { actionTable, formatEntityId } from "../src/helpers/common";
 
-// Tests structure (matchstick-as >=0.5.0)
-// https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
+let contractAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000001"
+);
+let treaturyAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000002"
+);
+let oldOwnerAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000003"
+);
+let newOwnerAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000004"
+);
+let feeTokenAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000005"
+);
+let feeFormulaAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000006"
+);
 
-describe("Describe entity assertions", () => {
-  beforeAll(() => {
-    let renderer = Address.fromString(
-      "0x0000000000000000000000000000000000000001"
-    )
-    let newCopyrightRendererUpdatedEvent = createCopyrightRendererUpdatedEvent(
-      renderer
-    )
-    handleCopyrightRendererUpdated(newCopyrightRendererUpdatedEvent)
-  })
+afterAll(() => {
+  clearStore();
+});
 
-  afterAll(() => {
-    clearStore()
-  })
+test("event:FeeTokenUpdated", () => {
+  let event = createFeeTokenUpdatedEvent(feeTokenAddress);
+  event.address = contractAddress;
 
-  // For more test scenarios, see:
-  // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
+  handleFeeTokenUpdated(event);
 
-  test("CopyrightRendererUpdated created and stored", () => {
-    assert.entityCount("CopyrightRendererUpdated", 1)
+  assert.fieldEquals(
+    "Configurator",
+    contractAddress.toHex(),
+    "feeToken",
+    feeTokenAddress.toHex()
+  );
+});
 
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
-    assert.fieldEquals(
-      "CopyrightRendererUpdated",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "renderer",
-      "0x0000000000000000000000000000000000000001"
-    )
+test("event:FeeUpdated", () => {
+  let event = createFeeUpdatedEvent(0, feeFormulaAddress);
+  event.address = contractAddress;
 
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
-  })
-})
+  handleFeeUpdated(event);
+
+  assert.fieldEquals(
+    "FeeFormula",
+    formatEntityId([contractAddress.toHex(), "0"]),
+    "value",
+    feeFormulaAddress.toHex()
+  );
+});
+
+test("event:OwnerUpdated", () => {
+  let event = createOwnerUpdatedEvent(oldOwnerAddress, newOwnerAddress);
+  event.address = contractAddress;
+
+  handleOwnerUpdated(event);
+
+  assert.fieldEquals(
+    "Configurator",
+    contractAddress.toHex(),
+    "owner",
+    newOwnerAddress.toHex()
+  );
+});
+
+test("event:TreaturyUpdated", () => {
+  let event = createTreaturyUpdatedEvent(treaturyAddress);
+  event.address = contractAddress;
+
+  handleTreaturyUpdated(event);
+
+  assert.fieldEquals(
+    "Configurator",
+    contractAddress.toHex(),
+    "treatury",
+    treaturyAddress.toHex()
+  );
+});

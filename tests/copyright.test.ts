@@ -1,62 +1,158 @@
 import {
   assert,
-  describe,
   test,
   clearStore,
+  beforeEach,
+  afterEach,
   beforeAll,
-  afterAll
-} from "matchstick-as/assembly/index"
-import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { ExampleEntity } from "../generated/schema"
-import { Approval } from "../generated/Copyright/Copyright"
-import { handleApproval } from "../src/copyright"
-import { createApprovalEvent } from "./copyright-utils"
+} from "matchstick-as/assembly/index";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
+import {
+  handleApproval,
+  handleApprovalForAll,
+  handlePropertyRulesetUpdated,
+  handleTransfer,
+} from "../src/mappings/copyright";
+import {
+  createApprovalEvent,
+  createApprovalForAllEvent,
+  createPropertyRulesetUpdatedEvent,
+  createTransferEvent,
+  hydrateCopyrightToken,
+  mockNameCall,
+  mockSymbolCall,
+} from "./copyright-utils";
+import { events, formatEntityId } from "../src/helpers/common";
+import { constants } from "@amxx/graphprotocol-utils";
 
-// Tests structure (matchstick-as >=0.5.0)
-// https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
+let contractAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000001"
+);
+let artworkAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000002"
+);
+let metadataAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000003"
+);
+let rulesetAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000004"
+);
+let ownerAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000005"
+);
+let receiverAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000006"
+);
+let operatorAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000007"
+);
+let creatorAddress = Address.fromString(
+  "0x0000000000000000000000000000000000000008"
+);
+let tokenId = BigInt.fromI32(1);
+let metadataId = BigInt.fromI32(1);
 
-describe("Describe entity assertions", () => {
-  beforeAll(() => {
-    let owner = Address.fromString("0x0000000000000000000000000000000000000001")
-    let approved = Address.fromString(
-      "0x0000000000000000000000000000000000000001"
-    )
-    let tokenId = BigInt.fromI32(234)
-    let newApprovalEvent = createApprovalEvent(owner, approved, tokenId)
-    handleApproval(newApprovalEvent)
-  })
+beforeAll(() => {
+  mockNameCall(contractAddress);
+  mockSymbolCall(contractAddress);
+});
 
-  afterAll(() => {
-    clearStore()
-  })
+beforeEach(() => {
+  hydrateCopyrightToken(
+    contractAddress,
+    tokenId,
+    artworkAddress,
+    metadataAddress,
+    metadataId,
+    constants.ADDRESS_ZERO,
+    creatorAddress,
+    ownerAddress,
+    constants.ADDRESS_ZERO
+  );
+});
 
-  // For more test scenarios, see:
-  // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
+afterEach(() => {
+  clearStore();
+});
 
-  test("ExampleEntity created and stored", () => {
-    assert.entityCount("ExampleEntity", 1)
+test("event:Approval", () => {
+  let event = createApprovalEvent(ownerAddress, operatorAddress, tokenId);
+  event.address = contractAddress;
 
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
-    assert.fieldEquals(
-      "ExampleEntity",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
-      "owner",
-      "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "ExampleEntity",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
-      "approved",
-      "0x0000000000000000000000000000000000000001"
-    )
-    assert.fieldEquals(
-      "ExampleEntity",
-      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a",
-      "tokenId",
-      "234"
-    )
+  handleApproval(event);
 
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
-  })
-})
+  assert.fieldEquals(
+    "CopyrightToken",
+    formatEntityId([contractAddress.toHex(), tokenId.toHex()]),
+    "owner",
+    ownerAddress.toHex()
+  );
+  assert.fieldEquals(
+    "CopyrightToken",
+    formatEntityId([contractAddress.toHex(), tokenId.toHex()]),
+    "approval",
+    operatorAddress.toHex()
+  );
+});
+
+test("event:ApprovalForAll", () => {
+  let event = createApprovalForAllEvent(ownerAddress, operatorAddress, true);
+  event.address = contractAddress;
+
+  handleApprovalForAll(event);
+
+  assert.fieldEquals(
+    "CopyrightOperator",
+    formatEntityId([
+      contractAddress.toHex(),
+      ownerAddress.toHex(),
+      operatorAddress.toHex(),
+    ]),
+    "approved",
+    "true"
+  );
+});
+
+test("event:PropertyRulesetUpdated", () => {
+  let event = createPropertyRulesetUpdatedEvent(tokenId, rulesetAddress);
+  event.address = contractAddress;
+
+  handlePropertyRulesetUpdated(event);
+
+  assert.fieldEquals(
+    "CopyrightToken",
+    formatEntityId([contractAddress.toHex(), tokenId.toHex()]),
+    "ruleset",
+    rulesetAddress.toHex()
+  );
+});
+
+test("event:Transfer", () => {
+  let event = createTransferEvent(ownerAddress, receiverAddress, tokenId);
+  event.address = contractAddress;
+
+  handleTransfer(event);
+
+  let id = formatEntityId([contractAddress.toHex(), tokenId.toHex()]);
+
+  assert.fieldEquals("CopyrightToken", id, "owner", receiverAddress.toHex());
+  assert.fieldEquals(
+    "CopyrightToken",
+    id,
+    "approval",
+    constants.ADDRESS_ZERO.toHex()
+  );
+  assert.fieldEquals(
+    "CopyrightTransfer",
+    events.id(event),
+    "from",
+    ownerAddress.toHex()
+  );
+  assert.fieldEquals(
+    "CopyrightTransfer",
+    events.id(event),
+    "to",
+    receiverAddress.toHex()
+  );
+  assert.fieldEquals("CopyrightTransfer", events.id(event), "token", id);
+});

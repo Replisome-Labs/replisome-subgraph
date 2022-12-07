@@ -46,7 +46,7 @@ type ArtworkBalance @entity {
   ownedValue: BigInt!
   usedValue: BigInt!
   transferFromEvent: [ArtworkTransfer!]! @derivedFrom(field: "fromBalance")
-  transferToEvent: [ArtworkTransfer!]! @derivedTo(field: "toBalance")
+  transferToEvent: [ArtworkTransfer!]! @derivedFrom(field: "toBalance")
 }
 
 type ArtworkOperator @entity {
@@ -136,10 +136,11 @@ type MetadataInfo @entity(immutable: true) {
   copyright: CopyrightToken
   width: BigInt!
   height: BigInt!
-  colors: [String!]
+  colors: [String!]!
+  data: Bytes!
   svg: String!
   raw: Bytes!
-  ingredients: [MetadataIngredient!]! @derivedFrom(field: "metadata")
+  ingredients: [MetadataIngredient!] @derivedFrom(field: "metadata")
 }
 
 type MetadataIngredient @entity(immutable: true) {

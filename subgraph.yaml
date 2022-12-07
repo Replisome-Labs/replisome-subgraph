@@ -128,6 +128,6 @@ templates:
         - name: IMetadata
           file: ./abis/IMetadata.json
       eventHandlers:
-        - event: Created(indexed uint256)
+        - event: Created(indexed uint256,bytes)
           handler: handleCreated
       file: ./src/mappings/metadata.ts
