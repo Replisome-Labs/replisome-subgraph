@@ -4,6 +4,7 @@ import {
   clearStore,
   beforeEach,
   afterEach,
+  beforeAll,
 } from "matchstick-as/assembly/index";
 import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { handleCreated } from "../src/mappings/metadata";
@@ -39,6 +40,17 @@ let operatorAddress = Address.fromString(
 );
 let metadataId = BigInt.fromI32(5);
 
+beforeAll(() => {
+  mockCopyrightCall(contractAddress, copyrightAddress);
+  mockGenerateSVG(contractAddress, metadataId);
+  mockGetIngredients(
+    contractAddress,
+    metadataId,
+    [BigInt.fromI32(1)],
+    [BigInt.fromI32(2)]
+  );
+});
+
 beforeEach(() => {
   hydrateCopyContract(copyrightAddress);
   hydrateCopyrightToken(
@@ -51,14 +63,6 @@ beforeEach(() => {
     creatorAddress,
     ownerAddress,
     operatorAddress
-  );
-  mockCopyrightCall(contractAddress, copyrightAddress);
-  mockGenerateSVG(contractAddress, metadataId);
-  mockGetIngredients(
-    contractAddress,
-    metadataId,
-    [BigInt.fromI32(1)],
-    [BigInt.fromI32(2)]
   );
 });
 

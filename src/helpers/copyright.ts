@@ -8,6 +8,7 @@ import {
   CopyrightToken,
   MetadataIngredient,
 } from "../../generated/schema";
+import { IMetadata } from "../../generated/templates/Metadata/IMetadata";
 import { fetchAccount } from "./account";
 import { fetchArtworkContract, fetchArtworkToken } from "./artwork";
 import { formatEntityId, supportsInterface } from "./common";
@@ -68,15 +69,25 @@ export function fetchCopyrightToken(
         fetchMetadataContract(try_metadata.value.getMetadata()),
         try_metadata.value.getMetadataId()
       );
+      metadataInfo.copyright = token.id;
+      metadataInfo.save();
+
       token.metadata = metadataInfo.id;
 
-      let ingredients = metadataInfo.ingredients;
-      if (ingredients != null) {
-        for (let i = 0; i < ingredients.length; i++) {
-          let ingredient = MetadataIngredient.load(ingredients[i]);
-          if (ingredient == null) continue;
-          let provanance = fetchCopyrightProvanance(ingredient.token, id);
-          provanance.amount = ingredient.amount;
+      let metadata = IMetadata.bind(Address.fromBytes(metadataInfo.contract));
+      let try_getIngredients = metadata.try_getIngredients(
+        metadataInfo.identifier
+      );
+      if (!try_getIngredients.reverted) {
+        let ingredientsResult = try_getIngredients.value;
+        let ids = ingredientsResult.getIds();
+        let amounts = ingredientsResult.getAmounts();
+        for (let i = 0; i < ids.length; i++) {
+          let provanance = fetchCopyrightProvanance(
+            fetchCopyrightToken(contract, ids[i]),
+            token
+          );
+          provanance.amount = amounts[i];
           provanance.save();
         }
       }
@@ -109,15 +120,15 @@ export function fetchCopyrightOperator(
 }
 
 export function fetchCopyrightProvanance(
-  fromTokenId: string,
-  toTokenId: string
+  fromToken: CopyrightToken,
+  toToken: CopyrightToken
 ): CopyrightProvanance {
-  let id = formatEntityId([fromTokenId, toTokenId]);
+  let id = formatEntityId([fromToken.id, toToken.identifier.toHex()]);
   let provanance = CopyrightProvanance.load(id);
   if (provanance == null) {
     provanance = new CopyrightProvanance(id);
-    provanance.fromToken = fromTokenId;
-    provanance.toToken = toTokenId;
+    provanance.fromToken = fromToken.id;
+    provanance.toToken = toToken.id;
   }
 
   return provanance;

@@ -144,6 +144,15 @@ export function hydrateCopyrightToken(
   token.save();
 }
 
+export function mockArtworkCall(
+  contractAddress: Address,
+  artworkAddress: Address
+): void {
+  createMockedFunction(contractAddress, "artwork", "artwork():(address)")
+    .withArgs([])
+    .returns([ethereum.Value.fromAddress(artworkAddress)]);
+}
+
 export function mockNameCall(contractAddress: Address): void {
   createMockedFunction(contractAddress, "name", "name():(string)")
     .withArgs([])
@@ -154,4 +163,63 @@ export function mockSymbolCall(contractAddress: Address): void {
   createMockedFunction(contractAddress, "symbol", "symbol():(string)")
     .withArgs([])
     .returns([ethereum.Value.fromString("CPRT")]);
+}
+
+export function mockMetadataOfCall(
+  contractAddress: Address,
+  tokenId: BigInt,
+  metadataAddress: Address,
+  metadataId: BigInt
+): void {
+  createMockedFunction(
+    contractAddress,
+    "metadataOf",
+    "metadataOf(uint256):(address,uint256)"
+  )
+    .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
+    .returns([
+      ethereum.Value.fromAddress(metadataAddress),
+      ethereum.Value.fromUnsignedBigInt(metadataId),
+    ]);
+}
+
+export function mockRulesetOfCall(
+  contractAddress: Address,
+  tokenId: BigInt,
+  rulesetAddress: Address
+): void {
+  createMockedFunction(
+    contractAddress,
+    "rulesetOf",
+    "rulesetOf(uint256):(address)"
+  )
+    .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
+    .returns([ethereum.Value.fromAddress(rulesetAddress)]);
+}
+
+export function mockCreatorOfCall(
+  contractAddress: Address,
+  tokenId: BigInt,
+  creatorAddress: Address
+): void {
+  createMockedFunction(
+    contractAddress,
+    "creatorOf",
+    "creatorOf(uint256):(address)"
+  )
+    .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
+    .returns([ethereum.Value.fromAddress(creatorAddress)]);
+}
+
+export function mockTokenURICall(
+  contractAddress: Address,
+  tokenId: BigInt
+): void {
+  createMockedFunction(
+    contractAddress,
+    "tokenURI",
+    "tokenURI(uint256):(string)"
+  )
+    .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
+    .returns([ethereum.Value.fromString("tokenURI-".concat(tokenId.toHex()))]);
 }
