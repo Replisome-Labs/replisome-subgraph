@@ -42,7 +42,6 @@ export function fetchArtworkToken(
       fetchCopyrightContract(copyrightAddress),
       identifier
     ).id;
-    token.save();
   }
 
   return token;
@@ -63,7 +62,6 @@ export function fetchArtworkBalance(
     balance.value = constants.BIGINT_ZERO;
     balance.ownedValue = constants.BIGINT_ZERO;
     balance.usedValue = constants.BIGINT_ZERO;
-    balance.save();
   }
 
   return balance;

@@ -14,6 +14,8 @@ import {
   createUnregisteredEvent,
 } from "./metadata-registry-utils";
 
+export { handleRegistered, handleUnregistered };
+
 let contractAddress = Address.fromString(
   "0x0000000000000000000000000000000000000001"
 );

@@ -8,7 +8,8 @@
     "create-local": "graph create --node http://localhost:8020/ higgspixel-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ higgspixel-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 higgspixel-subgraph",
-    "test": "graph test"
+    "test": "graph test",
+    "coverage": "graph test -- -c"
   },
   "dependencies": {
     "@amxx/graphprotocol-utils": "^1.1.0",

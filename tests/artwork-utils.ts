@@ -4,7 +4,9 @@ import {
   ApprovalForAll,
   TransferBatch,
   TransferSingle,
+  Unutilized,
   URI,
+  Utilized,
 } from "../generated/Artwork/IArtwork";
 import { ArtworkBalance, ArtworkToken } from "../generated/schema";
 import { formatEntityId } from "../src/helpers/common";
@@ -107,6 +109,56 @@ export function createURIEvent(value: string, id: BigInt): URI {
   );
 
   return uriEvent;
+}
+
+export function createUtilizedEvent(
+  account: Address,
+  ids: Array<BigInt>,
+  values: Array<BigInt>
+): Utilized {
+  let utilizedEvent = changetype<Utilized>(newMockEvent());
+
+  utilizedEvent.parameters = new Array();
+
+  utilizedEvent.parameters.push(
+    new ethereum.EventParam("account", ethereum.Value.fromAddress(account))
+  );
+  utilizedEvent.parameters.push(
+    new ethereum.EventParam("ids", ethereum.Value.fromUnsignedBigIntArray(ids))
+  );
+  utilizedEvent.parameters.push(
+    new ethereum.EventParam(
+      "values",
+      ethereum.Value.fromUnsignedBigIntArray(values)
+    )
+  );
+
+  return utilizedEvent;
+}
+
+export function createUnutilizedEvent(
+  account: Address,
+  ids: Array<BigInt>,
+  values: Array<BigInt>
+): Unutilized {
+  let unUtilizedEvent = changetype<Unutilized>(newMockEvent());
+
+  unUtilizedEvent.parameters = new Array();
+
+  unUtilizedEvent.parameters.push(
+    new ethereum.EventParam("account", ethereum.Value.fromAddress(account))
+  );
+  unUtilizedEvent.parameters.push(
+    new ethereum.EventParam("ids", ethereum.Value.fromUnsignedBigIntArray(ids))
+  );
+  unUtilizedEvent.parameters.push(
+    new ethereum.EventParam(
+      "values",
+      ethereum.Value.fromUnsignedBigIntArray(values)
+    )
+  );
+
+  return unUtilizedEvent;
 }
 
 export function hydrateArtworkToken(

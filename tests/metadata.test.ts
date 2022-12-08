@@ -17,6 +17,8 @@ import {
 import { formatEntityId } from "../src/helpers/common";
 import { hydrateCopyContract, hydrateCopyrightToken } from "./copyright-utils";
 
+export { handleCreated };
+
 let contractAddress = Address.fromString(
   "0x0000000000000000000000000000000000000001"
 );

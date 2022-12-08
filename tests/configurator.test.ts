@@ -17,7 +17,14 @@ import {
   createOwnerUpdatedEvent,
   createTreaturyUpdatedEvent,
 } from "./configurator-utils";
-import { actionTable, formatEntityId } from "../src/helpers/common";
+import { formatEntityId } from "../src/helpers/common";
+
+export {
+  handleFeeTokenUpdated,
+  handleFeeUpdated,
+  handleOwnerUpdated,
+  handleTreaturyUpdated,
+};
 
 let contractAddress = Address.fromString(
   "0x0000000000000000000000000000000000000001"

@@ -1,10 +1,10 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import {
   ApprovalForAll,
-  BurnCall,
-  CopyCall,
   TransferBatch,
   TransferSingle,
+  Utilized,
+  Unutilized,
 } from "../../generated/Artwork/IArtwork";
 import {
   Account,
@@ -19,42 +19,6 @@ import {
   fetchArtworkToken,
 } from "../helpers/artwork";
 import { events, formatEntityId, transactions } from "../helpers/common";
-
-///////////////////////////////////////////////////////////////////////////////
-//                                Call Handlers                              //
-///////////////////////////////////////////////////////////////////////////////
-
-export function handleCall(call: CopyCall): void {
-  let contract = fetchArtworkContract(call.to);
-  let token = fetchArtworkToken(contract, call.inputs.tokenId);
-  let owner = fetchAccount(call.inputs.account);
-  let ownerBalance = fetchArtworkBalance(token, owner);
-  let amount = call.inputs.amount;
-
-  token.ownedSupply.plus(amount);
-  ownerBalance.ownedValue.plus(amount);
-
-  token.save();
-  ownerBalance.save();
-}
-
-export function handlerBurn(call: BurnCall): void {
-  let contract = fetchArtworkContract(call.to);
-  let token = fetchArtworkToken(contract, call.inputs.tokenId);
-  let owner = fetchAccount(call.inputs.account);
-  let ownerBalance = fetchArtworkBalance(token, owner);
-  let amount = call.inputs.amount;
-
-  token.ownedSupply.minus(amount);
-  ownerBalance.ownedValue.minus(amount);
-
-  token.save();
-  ownerBalance.save();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//                                Event Handlers                             //
-///////////////////////////////////////////////////////////////////////////////
 
 export function handleApprovalForAll(event: ApprovalForAll): void {
   let contract = fetchArtworkContract(event.address);
@@ -111,6 +75,50 @@ export function handleTransferSingle(event: TransferSingle): void {
   );
 }
 
+export function handleUtilized(event: Utilized): void {
+  let contract = fetchArtworkContract(event.address);
+  let account = fetchAccount(event.params.account);
+
+  let ids = event.params.ids;
+  let values = event.params.values;
+
+  if (ids.length == values.length) {
+    for (let i = 0; i < ids.length; ++i) {
+      let token = fetchArtworkToken(contract, ids[i]);
+      let balance = fetchArtworkBalance(token, account);
+
+      token.usedSupply = token.usedSupply.plus(values[i]);
+      balance.value = balance.value.minus(values[i]);
+      balance.usedValue = balance.usedValue.plus(values[i]);
+
+      token.save();
+      balance.save();
+    }
+  }
+}
+
+export function handleUnutilized(event: Unutilized): void {
+  let contract = fetchArtworkContract(event.address);
+  let account = fetchAccount(event.params.account);
+
+  let ids = event.params.ids;
+  let values = event.params.values;
+
+  if (ids.length == values.length) {
+    for (let i = 0; i < ids.length; ++i) {
+      let token = fetchArtworkToken(contract, ids[i]);
+      let balance = fetchArtworkBalance(token, account);
+
+      token.usedSupply = token.usedSupply.minus(values[i]);
+      balance.value = balance.value.plus(values[i]);
+      balance.usedValue = balance.usedValue.minus(values[i]);
+
+      token.save();
+      balance.save();
+    }
+  }
+}
+
 function registerTransfer(
   event: ethereum.Event,
   suffix: string,
@@ -133,11 +141,11 @@ function registerTransfer(
 
   if (from.id == Address.zero()) {
     token.totalSupply.plus(value);
-    token.usedSupply = token.ownedSupply.minus(token.totalSupply);
+    token.ownedSupply = token.ownedSupply.plus(value);
   } else {
     let balance = fetchArtworkBalance(token, from);
     balance.value = balance.value.minus(value);
-    balance.usedValue = balance.ownedValue.minus(balance.value);
+    balance.ownedValue = balance.ownedValue.minus(value);
     balance.save();
 
     ev.from = from.id;
@@ -146,11 +154,11 @@ function registerTransfer(
 
   if (to.id == Address.zero()) {
     token.totalSupply.minus(value);
-    token.usedSupply = token.ownedSupply.minus(token.totalSupply);
+    token.ownedSupply = token.ownedSupply.minus(value);
   } else {
     let balance = fetchArtworkBalance(token, to);
     balance.value = balance.value.plus(value);
-    balance.usedValue = balance.ownedValue.minus(balance.value);
+    balance.ownedValue = balance.ownedValue.plus(value);
     balance.save();
 
     ev.to = to.id;

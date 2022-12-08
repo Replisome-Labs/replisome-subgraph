@@ -32,6 +32,13 @@ import {
 import { hydrateMetadataInfo, mockGetIngredients } from "./metadata-utils";
 import { hydrateArtworkToken } from "./artwork-utils";
 
+export {
+  handleApproval,
+  handleApprovalForAll,
+  handlePropertyRulesetUpdated,
+  handleTransfer,
+};
+
 let contractAddress = Address.fromString(
   "0x0000000000000000000000000000000000000001"
 );

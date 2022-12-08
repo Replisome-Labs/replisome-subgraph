@@ -29,11 +29,10 @@ dataSources:
           handler: handleTransferBatch
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
-      callHandlers:
-        - function: copy(address,uint256,uint256)
-          handler: handleCopy
-        - function: burn(address,uint256,uint256)
-          handler: handleBurn
+        - event: Utilized(indexed address,uint256[],uint256[])
+          handler: handleUtilized
+        - event: Unutilized(indexed address,uint256[],uint256[])
+          handler: handleUnutilized
       file: ./src/mappings/artwork.ts
   - kind: ethereum
     name: Copyright
