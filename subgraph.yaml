@@ -6,8 +6,9 @@ dataSources:
     name: Artwork
     network: fuji
     source:
-      address: "0xD2a20a32Eae122D2E6C6C4CD775279417d76c0FA"
       abi: IArtwork
+      address: "0xa9d5080Ce7099c3F9280FBc21ac34930f8e4EDcA"
+      startBlock: 16865932
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -25,9 +26,11 @@ dataSources:
       eventHandlers:
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
-        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+        - event: TransferBatch(indexed address,indexed address,indexed
+            address,uint256[],uint256[])
           handler: handleTransferBatch
-        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+        - event: TransferSingle(indexed address,indexed address,indexed
+            address,uint256,uint256)
           handler: handleTransferSingle
         - event: Utilized(indexed address,uint256[],uint256[])
           handler: handleUtilized
@@ -38,8 +41,9 @@ dataSources:
     name: Copyright
     network: fuji
     source:
-      address: "0x56495A26370859a7A209C722E564b104701a59E2"
       abi: ICopyright
+      address: "0x845d37439156C7F703312777ddCa320306041726"
+      startBlock: 16865932
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -67,8 +71,9 @@ dataSources:
     name: MetadataRegistry
     network: fuji
     source:
-      address: "0xb398779ac34b2e4886c8D90b0cb402042DDe12E3"
       abi: MetadataRegistry
+      address: "0xC674eF25E0FAbF3353D0f556a13FaEad50a53cEC"
+      startBlock: 16865932
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -88,8 +93,9 @@ dataSources:
     name: Configurator
     network: fuji
     source:
-      address: "0xb398779ac34b2e4886c8D90b0cb402042DDe12E3"
       abi: Configurator
+      address: "0x8caB7A59EbC4424637DBDD993baA95965aC4F41f"
+      startBlock: 16865932
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
