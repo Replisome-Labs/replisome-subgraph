@@ -159,6 +159,7 @@ type Configurator @entity {
   id: Bytes!
   owner: Account!
   treatury: Account!
+  copyrightRenderer: Bytes!
   feeToken: Bytes!
   feeFormulas: [FeeFormula!]! @derivedFrom(field: "configurator")
 }

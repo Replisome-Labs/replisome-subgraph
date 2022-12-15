@@ -5,7 +5,7 @@ import {
   ApprovalForAll,
   PropertyRulesetUpdated,
   Transfer,
-} from "../generated/Copyright/ICopyright";
+} from "../generated/Copyright/Copyright";
 import {
   CopyrightContract,
   CopyrightToken,
@@ -222,4 +222,23 @@ export function mockTokenURICall(
   )
     .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
     .returns([ethereum.Value.fromString("tokenURI-".concat(tokenId.toHex()))]);
+}
+
+export function mockGetIngredients(
+  contractAddress: Address,
+  tokenId: BigInt,
+  ingredientIds: BigInt[],
+  ingredientAmounts: BigInt[]
+): void {
+  ethereum.Value.fromUnsignedBigIntArray;
+  createMockedFunction(
+    contractAddress,
+    "getIngredients",
+    "getIngredients(uint256):(uint256[],uint256[])"
+  )
+    .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
+    .returns([
+      ethereum.Value.fromUnsignedBigIntArray(ingredientIds),
+      ethereum.Value.fromUnsignedBigIntArray(ingredientAmounts),
+    ]);
 }

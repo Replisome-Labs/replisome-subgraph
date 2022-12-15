@@ -6,9 +6,9 @@ dataSources:
     name: Artwork
     network: fuji
     source:
-      abi: IArtwork
-      address: "0xa9d5080Ce7099c3F9280FBc21ac34930f8e4EDcA"
-      startBlock: 16865932
+      abi: Artwork
+      address: "0xFfD9e7a1C29c7BB3A1fF2e24a4803ad1Bea5468B"
+      startBlock: 16946640
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -21,8 +21,12 @@ dataSources:
         - ArtworkOperator
         - ArtworkTransfer
       abis:
-        - name: IArtwork
-          file: ./abis/IArtwork.json
+        - name: Artwork
+          file: ./abis/Artwork.json
+        - name: Copyright
+          file: ./abis/Copyright.json
+        - name: IMetadata
+          file: ./abis/IMetadata.json
       eventHandlers:
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
@@ -41,9 +45,9 @@ dataSources:
     name: Copyright
     network: fuji
     source:
-      abi: ICopyright
-      address: "0x845d37439156C7F703312777ddCa320306041726"
-      startBlock: 16865932
+      abi: Copyright
+      address: "0x7d01D42c8e7d42C7460F06d2E72D18Bf5b3cC3FD"
+      startBlock: 16946640
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -55,8 +59,12 @@ dataSources:
         - CopyrightOperator
         - CopyrightTransfer
       abis:
-        - name: ICopyright
-          file: ./abis/ICopyright.json
+        - name: Artwork
+          file: ./abis/Artwork.json
+        - name: Copyright
+          file: ./abis/Copyright.json
+        - name: IMetadata
+          file: ./abis/IMetadata.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,indexed uint256)
           handler: handleApproval
@@ -72,8 +80,8 @@ dataSources:
     network: fuji
     source:
       abi: MetadataRegistry
-      address: "0xC674eF25E0FAbF3353D0f556a13FaEad50a53cEC"
-      startBlock: 16865932
+      address: "0x4c48fa8f255ED221Ad999f0246b51Fc71CcD4E72"
+      startBlock: 16946640
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -81,6 +89,12 @@ dataSources:
       entities:
         - MetadataContract
       abis:
+        - name: Artwork
+          file: ./abis/Artwork.json
+        - name: Copyright
+          file: ./abis/Copyright.json
+        - name: IMetadata
+          file: ./abis/IMetadata.json
         - name: MetadataRegistry
           file: ./abis/MetadataRegistry.json
       eventHandlers:
@@ -94,8 +108,8 @@ dataSources:
     network: fuji
     source:
       abi: Configurator
-      address: "0x8caB7A59EbC4424637DBDD993baA95965aC4F41f"
-      startBlock: 16865932
+      address: "0x204A8F7d9F604152EAfB3300d69f4A47b3638d5A"
+      startBlock: 16946640
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -115,10 +129,12 @@ dataSources:
           handler: handleFeeTokenUpdated
         - event: FeeUpdated(indexed uint8,indexed address)
           handler: handleFeeUpdated
+        - event: CopyrightRendererUpdated(indexed address)
+          handler: handleCopyrightRendererUpdated
       file: ./src/mappings/configurator.ts
 templates:
   - kind: ethereum
-    name: Metadata
+    name: IMetadata
     network: fuji
     source:
       abi: IMetadata
@@ -130,6 +146,10 @@ templates:
         - MetadataContract
         - MetadataInfo
       abis:
+        - name: Artwork
+          file: ./abis/Artwork.json
+        - name: Copyright
+          file: ./abis/Copyright.json
         - name: IMetadata
           file: ./abis/IMetadata.json
       eventHandlers:

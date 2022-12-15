@@ -1,6 +1,6 @@
 import { constants } from "@amxx/graphprotocol-utils";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { IArtwork } from "../../generated/Artwork/IArtwork";
+import { Artwork } from "../../generated/Artwork/Artwork";
 import {
   Account,
   ArtworkBalance,
@@ -30,18 +30,20 @@ export function fetchArtworkToken(
   let token = ArtworkToken.load(id);
 
   if (token == null) {
-    let artwork = IArtwork.bind(Address.fromBytes(contract.id));
+    let artwork = Artwork.bind(Address.fromBytes(contract.id));
     let try_uri = artwork.try_uri(identifier);
     let copyrightAddress = artwork.copyright();
     token = new ArtworkToken(id);
     token.contract = contract.id;
     token.identifier = identifier;
     token.totalSupply = constants.BIGINT_ZERO;
+    token.ownedSupply = constants.BIGINT_ZERO;
+    token.usedSupply = constants.BIGINT_ZERO;
     token.uri = try_uri.reverted ? "" : try_uri.value;
-    token.copyright = fetchCopyrightToken(
-      fetchCopyrightContract(copyrightAddress),
-      identifier
-    ).id;
+    token.copyright = formatEntityId([
+      copyrightAddress.toHex(),
+      identifier.toHex(),
+    ]);
   }
 
   return token;

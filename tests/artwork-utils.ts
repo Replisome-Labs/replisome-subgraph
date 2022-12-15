@@ -7,7 +7,7 @@ import {
   Unutilized,
   URI,
   Utilized,
-} from "../generated/Artwork/IArtwork";
+} from "../generated/Artwork/Artwork";
 import { ArtworkBalance, ArtworkToken } from "../generated/schema";
 import { formatEntityId } from "../src/helpers/common";
 

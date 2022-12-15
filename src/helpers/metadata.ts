@@ -1,8 +1,7 @@
 import { constants } from "@amxx/graphprotocol-utils";
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { ICopyright } from "../../generated/Copyright/ICopyright";
-import { IMetadata } from "../../generated/templates/Metadata/IMetadata";
-import { Metadata as MetadataTemplate } from "../../generated/templates";
+import { IMetadata } from "../../generated/templates/IMetadata/IMetadata";
+import { IMetadata as IMetadataTemplate } from "../../generated/templates";
 import {
   MetadataInfo,
   MetadataContract,
@@ -15,7 +14,7 @@ export function fetchMetadataContract(address: Address): MetadataContract {
   let contract = MetadataContract.load(address);
 
   if (contract == null) {
-    MetadataTemplate.create(address);
+    IMetadataTemplate.create(address);
     contract = new MetadataContract(address);
     contract.isRegistered = false;
     contract.totalSupply = constants.BIGINT_ZERO;

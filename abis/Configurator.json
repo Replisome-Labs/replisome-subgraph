@@ -15,7 +15,7 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "contract ICopyrightRenderer",
+        "internalType": "contract INFTRenderer",
         "name": "renderer",
         "type": "address"
       }
@@ -92,7 +92,7 @@
     "name": "copyrightRenderer",
     "outputs": [
       {
-        "internalType": "contract ICopyrightRenderer",
+        "internalType": "contract INFTRenderer",
         "name": "",
         "type": "address"
       }
@@ -182,7 +182,7 @@
   {
     "inputs": [
       {
-        "internalType": "contract ICopyrightRenderer",
+        "internalType": "contract INFTRenderer",
         "name": "renderer",
         "type": "address"
       }

@@ -4,7 +4,7 @@ import {
   ApprovalForAll,
   PropertyRulesetUpdated,
   Transfer,
-} from "../../generated/Copyright/ICopyright";
+} from "../../generated/Copyright/Copyright";
 import { CopyrightTransfer } from "../../generated/schema";
 import { fetchAccount } from "../helpers/account";
 import { events, transactions } from "../helpers/common";

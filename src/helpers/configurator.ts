@@ -1,5 +1,5 @@
 import { constants } from "@amxx/graphprotocol-utils";
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 import { Configurator, FeeFormula } from "../../generated/schema";
 import { actionTable, formatEntityId } from "./common";
 
@@ -8,6 +8,7 @@ export function fetchConfigurator(address: Address): Configurator {
   if (configurator == null) {
     configurator = new Configurator(address);
     configurator.owner = constants.ADDRESS_ZERO;
+    configurator.copyrightRenderer = constants.ADDRESS_ZERO;
     configurator.treatury = constants.ADDRESS_ZERO;
     configurator.feeToken = constants.ADDRESS_ZERO;
   }

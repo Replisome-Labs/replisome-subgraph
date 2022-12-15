@@ -1,6 +1,6 @@
 import { createMockedFunction, newMockEvent } from "matchstick-as";
 import { ethereum, BigInt, Bytes, Address } from "@graphprotocol/graph-ts";
-import { Created } from "../generated/templates/Metadata/IMetadata";
+import { Created } from "../generated/templates/IMetadata/IMetadata";
 import { MetadataInfo, MetadataIngredient } from "../generated/schema";
 import { formatEntityId } from "../src/helpers/common";
 import { constants } from "@amxx/graphprotocol-utils";

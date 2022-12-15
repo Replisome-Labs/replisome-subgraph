@@ -28,8 +28,9 @@ import {
   mockRulesetOfCall,
   mockSymbolCall,
   mockTokenURICall,
+  mockGetIngredients,
 } from "./copyright-utils";
-import { hydrateMetadataInfo, mockGetIngredients } from "./metadata-utils";
+import { hydrateMetadataInfo } from "./metadata-utils";
 import { hydrateArtworkToken } from "./artwork-utils";
 
 export {
@@ -82,7 +83,7 @@ beforeAll(() => {
   mockRulesetOfCall(contractAddress, derivativeTokenId, rulesetAddress);
   mockTokenURICall(contractAddress, derivativeTokenId);
   mockGetIngredients(
-    metadataAddress,
+    contractAddress,
     derivativeMetadataId,
     [tokenId],
     [BigInt.fromI32(2)]

@@ -1,6 +1,6 @@
 import { integers } from "@amxx/graphprotocol-utils";
 import { Bytes } from "@graphprotocol/graph-ts";
-import { Created } from "../../generated/templates/Metadata/IMetadata";
+import { Created } from "../../generated/templates/IMetadata/IMetadata";
 import {
   decodeMetadataRawData,
   fetchMetadataContract,

@@ -5,7 +5,7 @@ import {
   TransferSingle,
   Utilized,
   Unutilized,
-} from "../../generated/Artwork/IArtwork";
+} from "../../generated/Artwork/Artwork";
 import {
   Account,
   ArtworkContract,
@@ -87,6 +87,7 @@ export function handleUtilized(event: Utilized): void {
       let token = fetchArtworkToken(contract, ids[i]);
       let balance = fetchArtworkBalance(token, account);
 
+      token.totalSupply = token.totalSupply.minus(values[i]);
       token.usedSupply = token.usedSupply.plus(values[i]);
       balance.value = balance.value.minus(values[i]);
       balance.usedValue = balance.usedValue.plus(values[i]);
@@ -109,6 +110,7 @@ export function handleUnutilized(event: Unutilized): void {
       let token = fetchArtworkToken(contract, ids[i]);
       let balance = fetchArtworkBalance(token, account);
 
+      token.totalSupply = token.totalSupply.plus(values[i]);
       token.usedSupply = token.usedSupply.minus(values[i]);
       balance.value = balance.value.plus(values[i]);
       balance.usedValue = balance.usedValue.minus(values[i]);
