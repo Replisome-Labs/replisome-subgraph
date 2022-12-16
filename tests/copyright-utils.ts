@@ -242,3 +242,15 @@ export function mockGetIngredients(
       ethereum.Value.fromUnsignedBigIntArray(ingredientAmounts),
     ]);
 }
+
+export function mockIsUpgradable(
+  contractAddress: Address,
+  isUpgradable: boolean
+): void {
+  ethereum.Value.fromUnsignedBigIntArray;
+  createMockedFunction(
+    contractAddress,
+    "isUpgradable",
+    "isUpgradable():(bool)"
+  ).returns([ethereum.Value.fromBoolean(isUpgradable)]);
+}

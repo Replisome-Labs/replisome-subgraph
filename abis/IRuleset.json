@@ -1,0 +1,177 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      }
+    ],
+    "name": "canBurn",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allowance",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      }
+    ],
+    "name": "canCopy",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allowance",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      }
+    ],
+    "name": "canTransfer",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allowance",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IRuleset",
+        "name": "ruleset",
+        "type": "address"
+      }
+    ],
+    "name": "canUse",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allownace",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum Action",
+        "name": "action",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRoyaltyAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum Action",
+        "name": "action",
+        "type": "uint8"
+      }
+    ],
+    "name": "getRoyaltyReceiver",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum Action",
+        "name": "action",
+        "type": "uint8"
+      }
+    ],
+    "name": "getRoyaltyToken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "isUpgradable",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "ok",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

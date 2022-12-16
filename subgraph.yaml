@@ -65,6 +65,8 @@ dataSources:
           file: ./abis/Copyright.json
         - name: IMetadata
           file: ./abis/IMetadata.json
+        - name: IRuleset
+          file: ./abis/IRuleset.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,indexed uint256)
           handler: handleApproval

@@ -1,11 +1,13 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Copyright } from "../../generated/Copyright/Copyright";
+import { IRuleset } from "../../generated/Copyright/IRuleset";
 import {
   Account,
   CopyrightContract,
   CopyrightOperator,
   CopyrightProvanance,
   CopyrightToken,
+  Ruleset,
 } from "../../generated/schema";
 import { fetchAccount } from "./account";
 import { fetchArtworkContract, fetchArtworkToken } from "./artwork";
@@ -52,7 +54,9 @@ export function fetchCopyrightToken(
     token.creator = fetchAccount(
       try_creator.reverted ? Address.zero() : try_creator.value
     ).id;
-    token.ruleset = try_ruleset.reverted ? Address.zero() : try_ruleset.value;
+    token.ruleset = fetchRuleset(
+      try_ruleset.reverted ? Address.zero() : try_ruleset.value
+    ).id;
     token.uri = try_tokenURI.reverted ? "" : try_tokenURI.value;
 
     let artwork = fetchArtworkToken(
@@ -129,4 +133,20 @@ export function fetchCopyrightProvanance(
   }
 
   return provanance;
+}
+
+export function fetchRuleset(address: Address): Ruleset {
+  let ruleset = IRuleset.bind(address);
+  let contract = Ruleset.load(address);
+
+  if (contract == null) {
+    contract = new Ruleset(address);
+    let try_isUpgradable = ruleset.try_isUpgradable();
+    contract.isUpgradable = try_isUpgradable.reverted
+      ? false
+      : try_isUpgradable.value;
+    contract.save();
+  }
+
+  return contract;
 }

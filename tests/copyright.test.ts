@@ -29,6 +29,7 @@ import {
   mockSymbolCall,
   mockTokenURICall,
   mockGetIngredients,
+  mockIsUpgradable,
 } from "./copyright-utils";
 import { hydrateMetadataInfo } from "./metadata-utils";
 import { hydrateArtworkToken } from "./artwork-utils";
@@ -88,6 +89,7 @@ beforeAll(() => {
     [tokenId],
     [BigInt.fromI32(2)]
   );
+  mockIsUpgradable(rulesetAddress, true);
 });
 
 beforeEach(() => {
