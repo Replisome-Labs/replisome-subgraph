@@ -142,7 +142,7 @@ function registerTransfer(
   ev.value = value;
 
   if (from.id == Address.zero()) {
-    token.totalSupply.plus(value);
+    token.totalSupply = token.totalSupply.plus(value);
     token.ownedSupply = token.ownedSupply.plus(value);
   } else {
     let balance = fetchArtworkBalance(token, from);
@@ -155,7 +155,7 @@ function registerTransfer(
   }
 
   if (to.id == Address.zero()) {
-    token.totalSupply.minus(value);
+    token.totalSupply = token.totalSupply.minus(value);
     token.ownedSupply = token.ownedSupply.minus(value);
   } else {
     let balance = fetchArtworkBalance(token, to);
