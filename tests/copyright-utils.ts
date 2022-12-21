@@ -3,7 +3,7 @@ import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts";
 import {
   Approval,
   ApprovalForAll,
-  PropertyRulesetUpdated,
+  RulesetUpdated,
   Transfer,
 } from "../generated/Copyright/Copyright";
 import {
@@ -12,6 +12,7 @@ import {
   Ruleset,
 } from "../generated/schema";
 import { formatEntityId } from "../src/helpers/common";
+import { constants } from "@amxx/graphprotocol-utils";
 
 export function createApprovalEvent(
   owner: Address,
@@ -60,13 +61,11 @@ export function createApprovalForAllEvent(
   return approvalForAllEvent;
 }
 
-export function createPropertyRulesetUpdatedEvent(
+export function createRulesetUpdatedEvent(
   tokenId: BigInt,
   ruleset: Address
-): PropertyRulesetUpdated {
-  let propertyRulesetUpdatedEvent = changetype<PropertyRulesetUpdated>(
-    newMockEvent()
-  );
+): RulesetUpdated {
+  let propertyRulesetUpdatedEvent = changetype<RulesetUpdated>(newMockEvent());
 
   propertyRulesetUpdatedEvent.parameters = new Array();
 
@@ -112,6 +111,7 @@ export function hydrateCopyContract(contractAddress: Address): void {
   let contract = new CopyrightContract(contractAddress);
   contract.name = "HiggsPixel Copyright";
   contract.symbol = "CPRT";
+  contract.totalSupply = constants.BIGINT_ONE;
   contract.save();
 }
 

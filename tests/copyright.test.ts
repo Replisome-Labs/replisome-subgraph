@@ -11,14 +11,14 @@ import { constants } from "@amxx/graphprotocol-utils";
 import {
   handleApproval,
   handleApprovalForAll,
-  handlePropertyRulesetUpdated,
+  handleRulesetUpdated,
   handleTransfer,
 } from "../src/mappings/copyright";
 import { events, formatEntityId } from "../src/helpers/common";
 import {
   createApprovalEvent,
   createApprovalForAllEvent,
-  createPropertyRulesetUpdatedEvent,
+  createRulesetUpdatedEvent,
   createTransferEvent,
   hydrateCopyrightToken,
   mockArtworkCall,
@@ -37,7 +37,7 @@ import { hydrateArtworkToken } from "./artwork-utils";
 export {
   handleApproval,
   handleApprovalForAll,
-  handlePropertyRulesetUpdated,
+  handleRulesetUpdated,
   handleTransfer,
 };
 
@@ -157,10 +157,10 @@ test("event:ApprovalForAll", () => {
 });
 
 test("event:PropertyRulesetUpdated", () => {
-  let event = createPropertyRulesetUpdatedEvent(tokenId, rulesetAddress);
+  let event = createRulesetUpdatedEvent(tokenId, rulesetAddress);
   event.address = contractAddress;
 
-  handlePropertyRulesetUpdated(event);
+  handleRulesetUpdated(event);
 
   assert.fieldEquals(
     "CopyrightToken",

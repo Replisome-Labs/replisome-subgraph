@@ -1,12 +1,14 @@
 import { constants } from "@amxx/graphprotocol-utils";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Artwork } from "../../generated/Artwork/Artwork";
+import { IERC20 } from "../../generated/Artwork/IERC20";
 import {
   Account,
   ArtworkBalance,
   ArtworkContract,
   ArtworkOperator,
   ArtworkToken,
+  ERC20Contract,
 } from "../../generated/schema";
 import { formatEntityId } from "./common";
 import { fetchCopyrightContract, fetchCopyrightToken } from "./copyright";
@@ -89,4 +91,24 @@ export function fetchArtworkOperator(
   }
 
   return op;
+}
+
+export function fetchERC20Contract(address: Address): ERC20Contract {
+  let contract = ERC20Contract.load(address);
+
+  if (contract == null) {
+    let endpoint = IERC20.bind(address);
+    let name = endpoint.try_name();
+    let symbol = endpoint.try_symbol();
+    let decimals = endpoint.try_decimals();
+
+    contract = new ERC20Contract(address);
+    contract.name = name.reverted ? null : name.value;
+    contract.symbol = symbol.reverted ? null : symbol.value;
+    contract.decimals = decimals.reverted ? 18 : decimals.value;
+
+    contract.save();
+  }
+
+  return contract;
 }

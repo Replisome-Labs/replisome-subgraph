@@ -13,6 +13,8 @@ type Account @entity {
     @derivedFrom(field: "operator")
   copyrightTransferFromEvent: [CopyrightTransfer!]! @derivedFrom(field: "from")
   copyrightTransferToEvent: [CopyrightTransfer!]! @derivedFrom(field: "to")
+  royaltyReceived: [RoyaltyTransfer!]! @derivedFrom(field: "to")
+  royaltyPaid: [RoyaltyTransfer!]! @derivedFrom(field: "from")
   events: [Event!]! @derivedFrom(field: "emitter")
 }
 
@@ -72,10 +74,11 @@ type ArtworkTransfer implements Event @entity(immutable: true) {
   value: BigInt!
 }
 
-type CopyrightContract @entity(immutable: true) {
+type CopyrightContract @entity {
   id: Bytes!
-  name: String
-  symbol: String
+  name: String!
+  symbol: String!
+  totalSupply: BigInt!
   tokens: [CopyrightToken!]! @derivedFrom(field: "contract")
   operators: [CopyrightOperator!]! @derivedFrom(field: "contract")
   transfers: [CopyrightTransfer!]! @derivedFrom(field: "contract")
@@ -85,7 +88,7 @@ type CopyrightToken @entity {
   id: ID!
   contract: CopyrightContract!
   identifier: BigInt!
-  uri: String
+  uri: String!
   artwork: ArtworkToken!
   metadata: MetadataInfo!
   ruleset: Ruleset!
@@ -150,9 +153,28 @@ type MetadataIngredient @entity(immutable: true) {
   amount: BigInt!
 }
 
-type Ruleset @entity {
+type Ruleset @entity(immutable: true) {
   id: Bytes!
   isUpgradable: Boolean!
+}
+
+type RoyaltyTransfer implements Event @entity(immutable: true) {
+  id: ID!
+  transaction: Transaction!
+  emitter: Account!
+  timestamp: BigInt!
+  from: Account!
+  to: Account!
+  token: ERC20Contract!
+  value: BigInt!
+  action: Action!
+}
+
+type ERC20Contract @entity(immutable: true) {
+  id: Bytes!
+  name: String
+  symbol: String
+  decimals: Int!
 }
 
 type Configurator @entity {
@@ -172,14 +194,12 @@ type FeeFormula @entity {
 }
 
 enum Action {
-  ArtworkTransfer
-  ArtworkCopy
-  ArtworkBurn
-  ArtworkSale
-  CopyrightTransfer
   CopyrightClaim
   CopyrightWaive
   CopyrightSale
+  ArtworkCopy
+  ArtworkBurn
+  ArtworkUtilize
 }
 
 interface Event {

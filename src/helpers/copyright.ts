@@ -1,3 +1,4 @@
+import { constants } from "@amxx/graphprotocol-utils";
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { Copyright } from "../../generated/Copyright/Copyright";
 import { IRuleset } from "../../generated/Copyright/IRuleset";
@@ -24,7 +25,7 @@ export function fetchCopyrightContract(address: Address): CopyrightContract {
     let try_symbol = copyright.try_symbol();
     contract.name = try_name.reverted ? "" : try_name.value;
     contract.symbol = try_symbol.reverted ? "" : try_symbol.value;
-    contract.save();
+    contract.totalSupply = constants.BIGINT_ZERO;
   }
 
   return contract;

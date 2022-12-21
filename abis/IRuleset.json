@@ -5,6 +5,30 @@
         "internalType": "address",
         "name": "actor",
         "type": "address"
+      },
+      {
+        "internalType": "contract IRuleset",
+        "name": "ruleset",
+        "type": "address"
+      }
+    ],
+    "name": "canApply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allownace",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
       }
     ],
     "name": "canBurn",
@@ -59,21 +83,26 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "getBurnRoyalty",
+    "outputs": [
+      {
         "internalType": "address",
-        "name": "actor",
+        "name": "receiver",
         "type": "address"
       },
       {
-        "internalType": "contract IRuleset",
-        "name": "ruleset",
+        "internalType": "contract IERC20",
+        "name": "token",
         "type": "address"
-      }
-    ],
-    "name": "canUse",
-    "outputs": [
+      },
       {
         "internalType": "uint256",
-        "name": "allownace",
+        "name": "royaltyAmount",
         "type": "uint256"
       }
     ],
@@ -82,42 +111,28 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "enum Action",
-        "name": "action",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRoyaltyAmount",
-    "outputs": [
       {
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum Action",
-        "name": "action",
-        "type": "uint8"
-      }
-    ],
-    "name": "getRoyaltyReceiver",
+    "name": "getCopyRoyalty",
     "outputs": [
       {
         "internalType": "address",
         "name": "receiver",
         "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltyAmount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -126,17 +141,51 @@
   {
     "inputs": [
       {
-        "internalType": "enum Action",
-        "name": "action",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "salePrice",
+        "type": "uint256"
       }
     ],
-    "name": "getRoyaltyToken",
+    "name": "getSaleRoyalty",
     "outputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltyAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "getUtilizeRoyalty",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
       {
         "internalType": "contract IERC20",
         "name": "token",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "royaltyAmount",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

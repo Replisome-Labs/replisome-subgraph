@@ -5,11 +5,13 @@ import {
   TransferSingle,
   Utilized,
   Unutilized,
+  RoyaltyTransfer as RoyaltyTransferEvent,
 } from "../../generated/Artwork/Artwork";
 import {
   Account,
   ArtworkContract,
   ArtworkTransfer,
+  RoyaltyTransfer,
 } from "../../generated/schema";
 import { fetchAccount } from "../helpers/account";
 import {
@@ -17,8 +19,14 @@ import {
   fetchArtworkContract,
   fetchArtworkOperator,
   fetchArtworkToken,
+  fetchERC20Contract,
 } from "../helpers/artwork";
-import { events, formatEntityId, transactions } from "../helpers/common";
+import {
+  actionTable,
+  events,
+  formatEntityId,
+  transactions,
+} from "../helpers/common";
 
 export function handleApprovalForAll(event: ApprovalForAll): void {
   let contract = fetchArtworkContract(event.address);
@@ -119,6 +127,20 @@ export function handleUnutilized(event: Unutilized): void {
       balance.save();
     }
   }
+}
+
+export function handleRoyaltyTransfer(event: RoyaltyTransferEvent): void {
+  let ev = new RoyaltyTransfer(events.id(event));
+  ev.emitter = event.address;
+  ev.transaction = transactions.log(event).id;
+  ev.timestamp = event.block.timestamp;
+  ev.from = fetchAccount(event.params.from).id;
+  ev.to = fetchAccount(event.params.to).id;
+  ev.value = event.params.value;
+  ev.token = fetchERC20Contract(event.params.token).id;
+  let action = actionTable.get(event.params.action);
+  ev.action = action ? action : "";
+  ev.save();
 }
 
 function registerTransfer(

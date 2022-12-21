@@ -19,20 +19,20 @@
   },
   "fuji": {
     "Artwork": {
-      "address": "0xB2f88561Fd0F33f0B92D6eb92Db0CE37b36E51F1",
-      "startBlock": 17087540
+      "address": "0x1969FD04b92c83b341Cd7900cA8Aa704B52Bc424",
+      "startBlock": 17162708
     },
     "Configurator": {
-      "address": "0x001061DA0821A32D30b7B4704f6fe3E66FeAd906",
-      "startBlock": 17087540
+      "address": "0x46ec2FC6e464EC1809F366F9F56c64eA337aefB4",
+      "startBlock": 17162708
     },
     "Copyright": {
-      "address": "0x9AF13BE058FEcbAbE395fDC4c08B3b17Ae93ADb2",
-      "startBlock": 17087540
+      "address": "0xb859F9A3999BA6903065E3a52F5aE42aA2Bf79d3",
+      "startBlock": 17162708
     },
     "MetadataRegistry": {
-      "address": "0xb38840520Ba5580940451a63C5CEB50353141F02",
-      "startBlock": 17087540
+      "address": "0xD231360Cdfd9c06ffB95a31e57048C127100b0E7",
+      "startBlock": 17162708
     }
   }
 }

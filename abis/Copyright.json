@@ -50,6 +50,17 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "ForbiddenToApply",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "contract IMetadata",
         "name": "metadata",
         "type": "address"
@@ -104,7 +115,7 @@
         "type": "address"
       }
     ],
-    "name": "InvalidRule",
+    "name": "InvalidRuleset",
     "type": "error"
   },
   {
@@ -148,6 +159,17 @@
   {
     "inputs": [
       {
+        "internalType": "contract IRuleset",
+        "name": "ruleset",
+        "type": "address"
+      }
+    ],
+    "name": "NotUpgradableRuleset",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "account",
         "type": "address"
@@ -165,17 +187,6 @@
       }
     ],
     "name": "UnsafeRecipient",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "Unusable",
     "type": "error"
   },
   {
@@ -244,7 +255,7 @@
         "type": "address"
       }
     ],
-    "name": "PropertyRulesetUpdated",
+    "name": "RulesetUpdated",
     "type": "event"
   },
   {
@@ -439,83 +450,6 @@
         "internalType": "uint256[]",
         "name": "amounts",
         "type": "uint256[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum Action",
-        "name": "action",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "data",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRoyaltyAmount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum Action",
-        "name": "action",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRoyaltyReceiver",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "enum Action",
-        "name": "action",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRoyaltyToken",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "token",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -855,7 +789,7 @@
         "type": "address"
       }
     ],
-    "name": "updateRule",
+    "name": "updateRuleset",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

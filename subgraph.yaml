@@ -7,8 +7,8 @@ dataSources:
     network: fuji
     source:
       abi: Artwork
-      address: "0xB2f88561Fd0F33f0B92D6eb92Db0CE37b36E51F1"
-      startBlock: 17087540
+      address: "0x1969FD04b92c83b341Cd7900cA8Aa704B52Bc424"
+      startBlock: 17162708
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -27,6 +27,8 @@ dataSources:
           file: ./abis/Copyright.json
         - name: IMetadata
           file: ./abis/IMetadata.json
+        - name: IERC20
+          file: ./abis/IERC20.json
       eventHandlers:
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
@@ -40,14 +42,17 @@ dataSources:
           handler: handleUtilized
         - event: Unutilized(indexed address,uint256[],uint256[])
           handler: handleUnutilized
+        - event: RoyaltyTransfer(indexed address,indexed address,address,uint256,indexed
+            uint8)
+          handler: handleRoyaltyTransfer
       file: ./src/mappings/artwork.ts
   - kind: ethereum
     name: Copyright
     network: fuji
     source:
       abi: Copyright
-      address: "0x9AF13BE058FEcbAbE395fDC4c08B3b17Ae93ADb2"
-      startBlock: 17087540
+      address: "0xb859F9A3999BA6903065E3a52F5aE42aA2Bf79d3"
+      startBlock: 17162708
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -72,8 +77,8 @@ dataSources:
           handler: handleApproval
         - event: ApprovalForAll(indexed address,indexed address,bool)
           handler: handleApprovalForAll
-        - event: PropertyRulesetUpdated(indexed uint256,indexed address)
-          handler: handlePropertyRulesetUpdated
+        - event: RulesetUpdated(indexed uint256,indexed address)
+          handler: handleRulesetUpdated
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mappings/copyright.ts
@@ -82,8 +87,8 @@ dataSources:
     network: fuji
     source:
       abi: MetadataRegistry
-      address: "0xb38840520Ba5580940451a63C5CEB50353141F02"
-      startBlock: 17087540
+      address: "0xD231360Cdfd9c06ffB95a31e57048C127100b0E7"
+      startBlock: 17162708
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -110,8 +115,8 @@ dataSources:
     network: fuji
     source:
       abi: Configurator
-      address: "0x001061DA0821A32D30b7B4704f6fe3E66FeAd906"
-      startBlock: 17087540
+      address: "0x46ec2FC6e464EC1809F366F9F56c64eA337aefB4"
+      startBlock: 17162708
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

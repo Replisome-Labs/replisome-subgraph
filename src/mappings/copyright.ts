@@ -1,8 +1,9 @@
+import { integers } from "@amxx/graphprotocol-utils";
 import { Address } from "@graphprotocol/graph-ts";
 import {
   Approval,
   ApprovalForAll,
-  PropertyRulesetUpdated,
+  RulesetUpdated,
   Transfer,
 } from "../../generated/Copyright/Copyright";
 import { CopyrightTransfer } from "../../generated/schema";
@@ -23,6 +24,7 @@ export function handleApproval(event: Approval): void {
   token.owner = owner.id; // this should not be necessary, owner changed is signaled by a transfer event
   token.approval = approved.id;
 
+  contract.save();
   token.save();
   owner.save();
   approved.save();
@@ -36,15 +38,16 @@ export function handleApprovalForAll(event: ApprovalForAll): void {
 
   delegation.approved = event.params.approved;
 
+  contract.save();
   delegation.save();
 }
 
-export function handlePropertyRulesetUpdated(
-  event: PropertyRulesetUpdated
-): void {
+export function handleRulesetUpdated(event: RulesetUpdated): void {
   let contract = fetchCopyrightContract(event.address);
   let token = fetchCopyrightToken(contract, event.params.tokenId);
   token.ruleset = event.params.ruleset;
+
+  contract.save();
   token.save();
 }
 
@@ -53,6 +56,13 @@ export function handleTransfer(event: Transfer): void {
   let token = fetchCopyrightToken(contract, event.params.tokenId);
   let from = fetchAccount(event.params.from);
   let to = fetchAccount(event.params.to);
+
+  if (event.params.from == Address.zero()) {
+    contract.totalSupply = integers.increment(contract.totalSupply);
+  }
+  if (event.params.to == Address.zero()) {
+    contract.totalSupply = integers.decrement(contract.totalSupply);
+  }
 
   token.owner = to.id;
   token.approval = fetchAccount(Address.zero()).id; // implicit approval reset on transfer

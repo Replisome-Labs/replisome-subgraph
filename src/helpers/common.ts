@@ -2,14 +2,12 @@ import { Bytes, ethereum, TypedMap } from "@graphprotocol/graph-ts";
 import { Transaction } from "../../generated/schema";
 
 export const actionTable = new TypedMap<number, string>();
-actionTable.set(0, "ArtworkTransfer");
-actionTable.set(1, "ArtworkCopy");
-actionTable.set(2, "ArtworkBurn");
-actionTable.set(3, "ArtworkSale");
-actionTable.set(4, "CopyrightTransfer");
-actionTable.set(5, "CopyrightClaim");
-actionTable.set(6, "CopyrightWaive");
-actionTable.set(7, "CopyrightSale");
+actionTable.set(0, "CopyrightClaim");
+actionTable.set(1, "CopyrightWaive");
+actionTable.set(2, "CopyrightSale");
+actionTable.set(3, "ArtworkCopy");
+actionTable.set(4, "ArtworkBurn");
+actionTable.set(5, "ArtworkUtilize");
 
 export function formatEntityId(args: string[]): string {
   return args.join("-");
