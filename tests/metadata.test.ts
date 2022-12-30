@@ -11,7 +11,7 @@ import { handleCreated } from "../src/mappings/metadata";
 import {
   createCreatedEvent,
   mockCopyrightCall,
-  mockGenerateSVG,
+  mockGenerateHTML,
   mockGetIngredients,
 } from "./metadata-utils";
 import { formatEntityId } from "../src/helpers/common";
@@ -44,7 +44,7 @@ let metadataId = BigInt.fromI32(5);
 
 beforeAll(() => {
   mockCopyrightCall(contractAddress, copyrightAddress);
-  mockGenerateSVG(contractAddress, metadataId);
+  mockGenerateHTML(contractAddress, metadataId);
   mockGetIngredients(
     contractAddress,
     metadataId,
@@ -132,8 +132,8 @@ test("event:Created", () => {
   assert.fieldEquals(
     "MetadataInfo",
     formatEntityId([contractAddress.toHex(), metadataId.toHex()]),
-    "svg",
-    "svg-".concat(metadataId.toHex())
+    "html",
+    "html-".concat(metadataId.toHex())
   );
   assert.fieldEquals(
     "MetadataIngredient",

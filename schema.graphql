@@ -141,7 +141,7 @@ type MetadataInfo @entity(immutable: true) {
   height: BigInt!
   colors: [String!]!
   data: Bytes!
-  svg: String!
+  html: String!
   raw: Bytes!
   ingredients: [MetadataIngredient!] @derivedFrom(field: "metadata")
 }

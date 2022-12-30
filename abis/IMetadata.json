@@ -77,12 +77,12 @@
         "type": "uint256"
       }
     ],
-    "name": "generateRawData",
+    "name": "generateHTML",
     "outputs": [
       {
-        "internalType": "bytes",
-        "name": "raw",
-        "type": "bytes"
+        "internalType": "string",
+        "name": "html",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -96,12 +96,12 @@
         "type": "uint256"
       }
     ],
-    "name": "generateSVG",
+    "name": "generateRawData",
     "outputs": [
       {
-        "internalType": "string",
-        "name": "svg",
-        "type": "string"
+        "internalType": "bytes",
+        "name": "raw",
+        "type": "bytes"
       }
     ],
     "stateMutability": "view",

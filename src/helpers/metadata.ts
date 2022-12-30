@@ -44,8 +44,8 @@ export function fetchMetadataInfo(
     metadataInfo.data = constants.BYTES32_ZERO;
     metadataInfo.raw = constants.BYTES32_ZERO;
 
-    let try_generateSVG = metadata.try_generateSVG(identifier);
-    metadataInfo.svg = try_generateSVG.reverted ? "" : try_generateSVG.value;
+    let try_generateHTML = metadata.try_generateHTML(identifier);
+    metadataInfo.html = try_generateHTML.reverted ? "" : try_generateHTML.value;
 
     let try_getIngredients = metadata.try_getIngredients(identifier);
     if (!try_getIngredients.reverted) {
