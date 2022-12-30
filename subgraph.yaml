@@ -7,8 +7,8 @@ dataSources:
     network: fuji
     source:
       abi: Artwork
-      address: "0xFA0Fa7aF613eDf2E5B9098c9D12fB5620e470fE8"
-      startBlock: 17465889
+      address: "0x81C48415204B6b013ffEDF7566F3fCeE80AeDc8B"
+      startBlock: 17469664
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -51,8 +51,8 @@ dataSources:
     network: fuji
     source:
       abi: Copyright
-      address: "0xeCBDd99f80d406f7B5dc25e91F2358B3d5C20f15"
-      startBlock: 17465889
+      address: "0x2e93cF09BC7278b5025011BA7eCED7713EE6A599"
+      startBlock: 17469664
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -87,8 +87,8 @@ dataSources:
     network: fuji
     source:
       abi: MetadataRegistry
-      address: "0xfCd41E2380683525b0a7185f35e6D21b6D6a01b9"
-      startBlock: 17465871
+      address: "0xf1CaE84675818e4E50a49fc7B869A074439DC171"
+      startBlock: 17469659
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -115,8 +115,8 @@ dataSources:
     network: fuji
     source:
       abi: Configurator
-      address: "0x846C485915545894253ec7Bd48c8A97C62be5862"
-      startBlock: 17465857
+      address: "0x063a6D701068933eD0cdd853Ab7C4015C29E5e69"
+      startBlock: 17469653
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
