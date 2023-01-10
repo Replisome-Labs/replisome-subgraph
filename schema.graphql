@@ -130,6 +130,7 @@ type MetadataContract @entity {
   id: Bytes!
   isRegistered: Boolean!
   totalSupply: BigInt!
+  MIMEType: String!
 }
 
 type MetadataInfo @entity(immutable: true) {
@@ -141,7 +142,7 @@ type MetadataInfo @entity(immutable: true) {
   height: BigInt!
   colors: [String!]!
   data: Bytes!
-  html: String!
+  file: String!
   raw: Bytes!
   ingredients: [MetadataIngredient!] @derivedFrom(field: "metadata")
 }

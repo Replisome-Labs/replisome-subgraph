@@ -39,7 +39,7 @@ export function hydrateMetadataInfo(
   info.height = BigInt.fromI32(16);
   info.colors = [];
   info.data = constants.BYTES32_ZERO;
-  info.html = "";
+  info.file = "";
   info.raw = constants.BYTES32_ZERO;
   info.save();
 }
@@ -72,17 +72,23 @@ export function mockCopyrightCall(
     .returns([ethereum.Value.fromAddress(copyrightAddress)]);
 }
 
-export function mockGenerateHTML(
+export function mockMIMEType(contractAddress: Address, mimeType: string): void {
+  createMockedFunction(contractAddress, "MIMEType", "MIMEType():(string)")
+    .withArgs([])
+    .returns([ethereum.Value.fromString(mimeType)]);
+}
+
+export function mockGenerateFile(
   contractAddress: Address,
   tokenId: BigInt
 ): void {
   createMockedFunction(
     contractAddress,
-    "generateHTML",
-    "generateHTML(uint256):(string)"
+    "generateFile",
+    "generateFile(uint256):(string)"
   )
     .withArgs([ethereum.Value.fromUnsignedBigInt(tokenId)])
-    .returns([ethereum.Value.fromString("html-".concat(tokenId.toHex()))]);
+    .returns([ethereum.Value.fromString("file-".concat(tokenId.toHex()))]);
 }
 
 export function mockGetIngredients(

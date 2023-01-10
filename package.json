@@ -1,13 +1,13 @@
 {
-  "name": "higgspixel-subgraph",
+  "name": "replisome-subgraph",
   "license": "MIT",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ xiawpohr/higgspixel",
-    "create-local": "graph create --node http://localhost:8020/ xiawpohr/higgspixel",
-    "remove-local": "graph remove --node http://localhost:8020/ xiawpohr/higgspixel",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 xiawpohr/higgspixel",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ xiawpohr/replisome-subgraph",
+    "create-local": "graph create --node http://localhost:8020/ xiawpohr/replisome-subgraph",
+    "remove-local": "graph remove --node http://localhost:8020/ xiawpohr/replisome-subgraph",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 xiawpohr/replisome-subgraph",
     "test": "graph test",
     "coverage": "graph test -- -c"
   },

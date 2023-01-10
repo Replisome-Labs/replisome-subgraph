@@ -18,6 +18,7 @@ export function fetchMetadataContract(address: Address): MetadataContract {
     contract = new MetadataContract(address);
     contract.isRegistered = false;
     contract.totalSupply = constants.BIGINT_ZERO;
+    contract.MIMEType = "";
   }
 
   return contract;
@@ -43,25 +44,48 @@ export function fetchMetadataInfo(
     metadataInfo.colors = [];
     metadataInfo.data = constants.BYTES32_ZERO;
     metadataInfo.raw = constants.BYTES32_ZERO;
-
-    let try_generateHTML = metadata.try_generateHTML(identifier);
-    metadataInfo.html = try_generateHTML.reverted ? "" : try_generateHTML.value;
-
-    let try_getIngredients = metadata.try_getIngredients(identifier);
-    if (!try_getIngredients.reverted) {
-      let ingredientsResult = try_getIngredients.value;
-      let ids = ingredientsResult.getIds();
-      let amounts = ingredientsResult.getAmounts();
-      for (let i = 0; i < ids.length; i++) {
-        let ingredient = fetchMetadataIngredient(metadataInfo, ids[i]);
-        ingredient.token = fetchCopyrightToken(copyrightContract, ids[i]).id;
-        ingredient.amount = amounts[i];
-        ingredient.save();
-      }
-    }
+    metadataInfo.file = "";
   }
 
   return metadataInfo;
+}
+
+export function createMetadataInfo(
+  info: MetadataInfo,
+  rawData: Bytes
+): MetadataInfo {
+  let decodedResult = decodeMetadataRawData(rawData);
+  info.width = decodedResult.getWidth();
+  info.height = decodedResult.getHeight();
+  info.colors = decodedResult
+    .getColors()
+    .map<string>((c: Bytes) => formatColor(c));
+  info.data = decodedResult.getData();
+  info.raw = rawData;
+
+  let metadata = IMetadata.bind(Address.fromBytes(info.contract));
+
+  let try_generateFile = metadata.try_generateFile(info.identifier);
+  info.file = try_generateFile.reverted ? "" : try_generateFile.value;
+
+  let try_getIngredients = metadata.try_getIngredients(info.identifier);
+  let copyrightAddress = metadata.copyright();
+  let copyrightContract = fetchCopyrightContract(copyrightAddress);
+  if (!try_getIngredients.reverted) {
+    let ingredientsResult = try_getIngredients.value;
+    let ids = ingredientsResult.getIds();
+    let amounts = ingredientsResult.getAmounts();
+    for (let i = 0; i < ids.length; i++) {
+      let ingredient = fetchMetadataIngredient(info, ids[i]);
+      ingredient.token = fetchCopyrightToken(copyrightContract, ids[i]).id;
+      ingredient.amount = amounts[i];
+      ingredient.save();
+    }
+  }
+
+  info.save();
+
+  return info;
 }
 
 export function fetchMetadataIngredient(

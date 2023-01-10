@@ -2,7 +2,8 @@ import {
   assert,
   test,
   clearStore,
-  afterAll,
+  afterEach,
+  beforeAll,
 } from "matchstick-as/assembly/index";
 import { Address } from "@graphprotocol/graph-ts";
 import {
@@ -13,6 +14,7 @@ import {
   createRegisteredEvent,
   createUnregisteredEvent,
 } from "./metadata-registry-utils";
+import { mockMIMEType } from "./metadata-utils";
 
 export { handleRegistered, handleUnregistered };
 
@@ -23,7 +25,11 @@ let metadataAddress = Address.fromString(
   "0x0000000000000000000000000000000000000002"
 );
 
-afterAll(() => {
+beforeAll(() => {
+  mockMIMEType(metadataAddress, "text/html");
+});
+
+afterEach(() => {
   clearStore();
 });
 

@@ -20,6 +20,19 @@
   },
   {
     "inputs": [],
+    "name": "MIMEType",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "mimeType",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "copyright",
     "outputs": [
       {
@@ -73,15 +86,15 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "metadataId",
+        "name": "id",
         "type": "uint256"
       }
     ],
-    "name": "generateHTML",
+    "name": "generateFile",
     "outputs": [
       {
         "internalType": "string",
-        "name": "html",
+        "name": "file",
         "type": "string"
       }
     ],

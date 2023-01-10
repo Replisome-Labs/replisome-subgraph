@@ -109,7 +109,7 @@ export function createTransferEvent(
 
 export function hydrateCopyContract(contractAddress: Address): void {
   let contract = new CopyrightContract(contractAddress);
-  contract.name = "HiggsPixel Copyright";
+  contract.name = "Replisome.xyz Copyright";
   contract.symbol = "CPRT";
   contract.totalSupply = constants.BIGINT_ONE;
   contract.save();
@@ -156,7 +156,7 @@ export function mockArtworkCall(
 export function mockNameCall(contractAddress: Address): void {
   createMockedFunction(contractAddress, "name", "name():(string)")
     .withArgs([])
-    .returns([ethereum.Value.fromString("HiggsPixel Copyright")]);
+    .returns([ethereum.Value.fromString("Replisome.xyz Copyright")]);
 }
 
 export function mockSymbolCall(contractAddress: Address): void {
